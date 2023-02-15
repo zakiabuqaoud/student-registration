@@ -9,7 +9,9 @@ public class MainGui extends JFrame implements ActionListener {
     JLabel titlePartOneLabel, titlePartTwoLabel, ArcadiaPartOneLabel,ArcadiaPartTwoLabel;
     JButton createStudentButton, showStudentsData;
 
-    CreateStudentGui cs;
+    //external gui
+    CreateStudentGui createStudentGui;
+    GetAllStudentGui getAllStudentGui;
 
     MainGui(){
         container = getContentPane();
@@ -17,11 +19,8 @@ public class MainGui extends JFrame implements ActionListener {
         setLayout(null);
         setVisible(true);
         setSize(1000, 700);
-        setResizable(false);
+        setResizable(true);
         container.setBackground(Theme.lightBlueColor);
-
-        cs = new CreateStudentGui(this);
-        cs.setVisible(false);
 
 
         //JLabel
@@ -96,7 +95,13 @@ public class MainGui extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == createStudentButton){
-            cs.setVisible(true);
+            createStudentGui = new CreateStudentGui(this);
+            createStudentGui.setVisible(true);
+        }
+        if(e.getSource() == showStudentsData){
+            getAllStudentGui = new GetAllStudentGui(this);
+            getAllStudentGui.setVisible(true);
+
         }
 
     }

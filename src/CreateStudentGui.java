@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
 
 public class CreateStudentGui extends JFrame implements ActionListener {
     Container container;
@@ -12,8 +13,6 @@ public class CreateStudentGui extends JFrame implements ActionListener {
     JButton createButton, resetButton, backButton, addDate;
     JTextField nameTextField, phoneTextField, paymentTextField, paymentDateTextField;
     JComboBox levelsCompoBox;
-
-    Font bigFont = new Font("Cleaver's_Juvenia_Bloc...", Font.BOLD, 30);
 
     MainGui prop;
 
@@ -25,7 +24,7 @@ public class CreateStudentGui extends JFrame implements ActionListener {
         setLayout(null);
         setVisible(true);
         setSize(1000, 600);
-        setResizable(false);
+        setResizable(true);
         container.setBackground(Theme.lightPurpleColor);
 //        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         /////////////////////////////////////////////////////
@@ -79,7 +78,7 @@ public class CreateStudentGui extends JFrame implements ActionListener {
         backButton.setForeground(Theme.blackColor);
         backButton.setFont(Theme.fontSmallBold);
 
-        addDate = new JButton("aaa");
+        addDate = new JButton("+");
         addDate.setBackground(Theme.darkPurpleColor);
         addDate.setForeground(Theme.blackColor);
         addDate.setFont(Theme.fontSmallBold);
@@ -88,7 +87,7 @@ public class CreateStudentGui extends JFrame implements ActionListener {
         createButton.setBounds(292, 458, 141, 28);
         resetButton.setBounds(533, 458, 141, 28);
         backButton.setBounds(774, 458, 141, 28);
-        addDate.setBounds(435, 348, 40, 28);
+        addDate.setBounds(435, 348, 60, 28);
         container.add(createButton);
         container.add(resetButton);
         container.add(backButton);
@@ -99,10 +98,10 @@ public class CreateStudentGui extends JFrame implements ActionListener {
         addDate.addActionListener(this);
         //Label
         titleLabel = new JLabel("Create a new student");
-        titleLabel.setFont(bigFont);
+        titleLabel.setFont(Theme.bigFont);
         titleLabel.setForeground(Theme.blackColor);
 
-        nameLabel = new JLabel("FullName");
+        nameLabel = new JLabel("Full Name");
         nameLabel.setFont(Theme.smallFont);
         nameLabel.setForeground(Theme.blackColor);
 
@@ -169,22 +168,72 @@ public class CreateStudentGui extends JFrame implements ActionListener {
         if (event.getSource() == createButton) {
             int validation1 = -1;
             int validation2 = -1;
+            int validation3 = -1;
+            int validation4 = -1;
 
 
-            if (nameTextField.getText().isEmpty() || phoneTextField.getText().isEmpty() || paymentTextField.getText().isEmpty() || paymentDateTextField.getText().isEmpty())
+            if (nameTextField.getText().trim().isEmpty() || phoneTextField.getText().trim().isEmpty() || paymentTextField.getText().trim().isEmpty() || paymentDateTextField.getText().trim().isEmpty())
                 JOptionPane.showMessageDialog(null, "Complete All Informations", "Error", 0);
             else {
                 validation1 = 1;
             }
-            if (isDate(paymentDateTextField.getText())) {
+
+
+            if (Operation.isDate(paymentDateTextField.getText().trim())) {
                 validation2 = 1;
             } else {
                 JOptionPane.showMessageDialog(null, "Payment Date is incorrect", "Error", 0);
             }
 
-            if (validation1 == 1 && validation2 == 1) {
-                Student student = new Student("1", nameTextField.getText(), phoneTextField.getText(), paymentDateTextField.getText());
+            if (Operation.checkIsNotHash(nameTextField.getText().trim()) && Operation.checkIsNotHash(phoneTextField.getText().trim()) && Operation.checkIsNotHash(paymentTextField.getText().trim())) {
+                validation3 = 1;
+            } else {
+                JOptionPane.showMessageDialog(null, "no # or :", "Error", 0);
+            }
+
+            if (Operation.isPhoneNumber(phoneTextField.getText().trim())) {
+                validation4 = 1;
+            } else {
+                JOptionPane.showMessageDialog(null, "must you enter number in  phone number ", "Error", 0);
+            }
+
+            // create student, level, payment
+            if (validation1 == 1 && validation2 == 1 && validation3 == 1 && validation4 == 1) {
+                Student student = new Student(FileOperation.getID(0), nameTextField.getText(), phoneTextField.getText(), paymentDateTextField.getText());
                 student.addStudentInFile();
+
+                Payment payment = new Payment(FileOperation.getID(1), paymentTextField.getText().trim(), paymentDateTextField.getText().trim(), student.id);
+                payment.addPaymentInFile(payment);
+
+                //JCompoBox
+                if (levelsCompoBox.getSelectedItem().toString() == "A1") {
+                    LevelIDWithStudentID level = new LevelIDWithStudentID(FileOperation.getID(2),"1",student.id);
+                    level.addLevelInFile(level);
+                }else if(levelsCompoBox.getSelectedItem().toString() == "A2"){
+                    LevelIDWithStudentID level = new LevelIDWithStudentID(FileOperation.getID(2),"2",student.id);
+                    level.addLevelInFile(level);
+                }else if(levelsCompoBox.getSelectedItem().toString() == "B1"){
+                    LevelIDWithStudentID level = new LevelIDWithStudentID(FileOperation.getID(2),"3",student.id);
+                    level.addLevelInFile(level);
+
+                }else if(levelsCompoBox.getSelectedItem().toString() == "B2"){
+                    LevelIDWithStudentID level = new LevelIDWithStudentID(FileOperation.getID(2),"4",student.id);
+                    level.addLevelInFile(level);
+                }else if(levelsCompoBox.getSelectedItem().toString() == "C1"){
+                    LevelIDWithStudentID level = new LevelIDWithStudentID(FileOperation.getID(2),"5",student.id);
+                    level.addLevelInFile(level);
+                }else if(levelsCompoBox.getSelectedItem().toString() == "C2"){
+                    LevelIDWithStudentID level = new LevelIDWithStudentID(FileOperation.getID(2),"6",student.id);
+                    level.addLevelInFile(level);
+                }
+
+
+                JOptionPane.showMessageDialog(null, "Student is added", "Display Message", JOptionPane.INFORMATION_MESSAGE);
+                nameTextField.setText("");
+                phoneTextField.setText("");
+                paymentTextField.setText("");
+                paymentDateTextField.setText("");
+
             }
 
 
@@ -196,9 +245,6 @@ public class CreateStudentGui extends JFrame implements ActionListener {
 
     }
 
-    public static boolean isDate(String str) {
-        return str.matches("[0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9]");
-    }
 
     public String getComboBoxSelected() {
         String level = levelsCompoBox.getSelectedItem().toString();

@@ -3,9 +3,9 @@ import java.awt.*;
 
 class Theme{
 
+    static Font bigFont = new Font("Cleaver's_Juvenia_Bloc...", Font.BOLD, 30);
 
     static Font fontSmallBold = new Font("Cleaver's_Juvenia_Bloc...", Font.BOLD, 21);
-    static Font bigFont = new Font("Cleaver's_Juvenia_Bloc...", Font.BOLD, 50);
    static Font inputColor = new Font("Cleaver's_Juvenia_Bloc...", Font.BOLD, 15);
     static Font smallFont = new Font("Cleaver's_Juvenia_Bloc...", Font.BOLD, 15);
 

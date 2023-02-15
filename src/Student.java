@@ -26,7 +26,7 @@ public class Student {
         try {
             FileWriter fileWriter = new FileWriter(new File("students.txt"), true);
             BufferedWriter write = new BufferedWriter(fileWriter);
-            write.write(this.id + "#" + this.name + "#" + this.phoneNumber + "#" + this.RegisterDate + "\r\n");
+            write.write("id:" + this.id + "#" + "name:"+this.name + "#" + "phone:"+this.phoneNumber + "#" + "date:"+this.RegisterDate + "\r\n");
             write.close();
 
         } catch (Exception exception) {

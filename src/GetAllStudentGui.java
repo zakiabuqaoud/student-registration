@@ -14,18 +14,20 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
     JTable studentsTable;
     JScrollPane scroll;
 
-
+    GetDetailsUser getDetailsUser;
 
 
     public GetAllStudentGui(MainGui prop) {
         this.prop = prop;
         container = getContentPane();
 
+
+
         setTitle("Students Table");
         setLayout(null);
         setVisible(true);
         setSize(1000, 700);
-        setResizable(false);
+        setResizable(true);
         container.setBackground(Theme.lightPurpleColor);
 
         //JButton
@@ -150,26 +152,6 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
         model.addColumn("Register Date");
 
         model.addRow(new Object[]{"Zaki Abu Raya","0595078069","15-12-2022"});
-        model.addRow(new Object[]{"Zaki Abu Raya","0595078069","15-12-2022"});
-        model.addRow(new Object[]{"Zaki Abu Raya","0595078069","15-12-2022"});
-        model.addRow(new Object[]{"Zaki Abu Raya","0595078069","15-12-2022"});
-        model.addRow(new Object[]{"Zaki Abu Raya","0595078069","15-12-2022"});
-        model.addRow(new Object[]{"Zaki Abu Raya","0595078069","15-12-2022"});
-        model.addRow(new Object[]{"Zaki Abu Raya","0595078069","15-12-2022"});
-        model.addRow(new Object[]{"Zaki Abu Raya","0595078069","15-12-2022"});
-        model.addRow(new Object[]{"Zaki Abu Raya","0595078069","15-12-2022"});
-        model.addRow(new Object[]{"Zaki Abu Raya","0595078069","15-12-2022"});
-        model.addRow(new Object[]{"Zaki Abu Raya","0595078069","15-12-2022"});
-        model.addRow(new Object[]{"Zaki Abu Raya","0595078069","15-12-2022"});
-        model.addRow(new Object[]{"Zaki Abu Raya","0595078069","15-12-2022"});
-        model.addRow(new Object[]{"Zaki Abu Raya","0595078069","15-12-2022"});
-        model.addRow(new Object[]{"Zaki Abu Raya","0595078069","15-12-2022"});
-        model.addRow(new Object[]{"Zaki Abu Raya","0595078069","15-12-2022"});
-        model.addRow(new Object[]{"Zaki Abu Raya","0595078069","15-12-2022"});
-        model.addRow(new Object[]{"Zaki Abu Raya","0595078069","15-12-2022"});
-        model.addRow(new Object[]{"Zaki Abu Raya","0595078069","15-12-2022"});
-        model.addRow(new Object[]{"Zaki Abu Raya","0595078069","15-12-2022"});
-        model.addRow(new Object[]{"Zaki Abu Raya","0595078069","15-12-2022"});
 
 
 
@@ -177,7 +159,16 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent event) {
+
+        if(event.getSource() == backButton){
+            this.setVisible(false);
+        }
+
+        if(event.getSource() == showStudentDetailsButton){
+            getDetailsUser = new GetDetailsUser(this);
+            getDetailsUser.setVisible(true);
+        }
 
     }
 }
