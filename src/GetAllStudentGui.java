@@ -2,6 +2,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class GetAllStudentGui extends JFrame implements ActionListener {
     Container container;
@@ -16,11 +17,12 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
 
     GetDetailsUser getDetailsUser;
 
+    String oldName;
+
 
     public GetAllStudentGui(MainGui prop) {
         this.prop = prop;
         container = getContentPane();
-
 
 
         setTitle("Students Table");
@@ -28,39 +30,39 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
         setVisible(true);
         setSize(1000, 700);
         setResizable(true);
-        container.setBackground(Theme.lightPurpleColor);
+        container.setBackground(Theme.lightBlueColor);
 
         //JButton
         updateButton = new JButton("Update");
-        updateButton.setBackground(Theme.darkPurpleColor);
+        updateButton.setBackground(Theme.lightBrownColor);
         updateButton.setForeground(Theme.blackColor);
         updateButton.setFont(Theme.fontSmallBold);
 
         deleteButton = new JButton("Delete");
-        deleteButton.setBackground(Theme.darkPurpleColor);
+        deleteButton.setBackground(Theme.lightBrownColor);
         deleteButton.setForeground(Theme.blackColor);
         deleteButton.setFont(Theme.fontSmallBold);
 
         backButton = new JButton("Back");
-        backButton.setBackground(Theme.darkPurpleColor);
+        backButton.setBackground(Theme.lightBrownColor);
         backButton.setForeground(Theme.blackColor);
         backButton.setFont(Theme.fontSmallBold);
 
         showStudentDetailsButton = new JButton("Show Details");
-        showStudentDetailsButton.setBackground(Theme.darkPurpleColor);
+        showStudentDetailsButton.setBackground(Theme.lightBrownColor);
         showStudentDetailsButton.setForeground(Theme.blackColor);
         showStudentDetailsButton.setFont(Theme.fontSmallBold);
 
         chooseDateButton = new JButton("+");
-        chooseDateButton.setBackground(Theme.darkPurpleColor);
+        chooseDateButton.setBackground(Theme.lightBrownColor);
         chooseDateButton.setForeground(Theme.blackColor);
         chooseDateButton.setFont(Theme.fontSmallBold);
 
-        updateButton.setBounds(600,280,141,28);
-        deleteButton.setBounds(800,280,141,28);
-        backButton.setBounds(800,610,141,28);
-        showStudentDetailsButton.setBounds(550,610,191,28);
-        chooseDateButton.setBounds(894,183,50,28);
+        updateButton.setBounds(600, 280, 141, 28);
+        deleteButton.setBounds(800, 280, 141, 28);
+        backButton.setBounds(800, 610, 141, 28);
+        showStudentDetailsButton.setBounds(550, 610, 191, 28);
+        chooseDateButton.setBounds(894, 183, 50, 28);
 
         container.add(updateButton);
         container.add(deleteButton);
@@ -95,10 +97,10 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
         titleLabel.setFont(Theme.bigFont);
         titleLabel.setForeground(Theme.blackColor);
 
-        searchLabel.setBounds(78,280,176,28);
+        searchLabel.setBounds(78, 280, 176, 28);
         nameLabel.setBounds(78, 128, 176, 28);
         phoneNumberLabel.setBounds(78, 183, 176, 28);
-        registrationDateLabel.setBounds(528,183,176,28);
+        registrationDateLabel.setBounds(528, 183, 176, 28);
         titleLabel.setBounds(350, 25, 554, 52);
 
         container.add(searchLabel);
@@ -113,7 +115,7 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
         nameTextField.setForeground(Theme.blackColor);
         nameTextField.setFont(Theme.inputColor);
 
-        phoneNumberTextField= new JTextField();
+        phoneNumberTextField = new JTextField();
         phoneNumberTextField.setBackground(Theme.whiteColor);
         phoneNumberTextField.setForeground(Theme.blackColor);
         phoneNumberTextField.setFont(Theme.inputColor);
@@ -130,8 +132,8 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
 
         nameTextField.setBounds(225, 128, 400, 28);
         phoneNumberTextField.setBounds(225, 183, 230, 28);
-        registrationDateTextField.setBounds(654,183,230,28);
-        searchTextField.setBounds(150,280,230,28);
+        registrationDateTextField.setBounds(654, 183, 230, 28);
+        searchTextField.setBounds(150, 280, 230, 28);
 
         container.add(nameTextField);
         container.add(phoneNumberTextField);
@@ -143,7 +145,7 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
         studentsTable = new JTable(model);
         scroll = new JScrollPane(studentsTable);
 
-        scroll.setBounds(78,350,872,220);
+        scroll.setBounds(78, 350, 872, 220);
 
         container.add(scroll);
 
@@ -151,24 +153,162 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
         model.addColumn("Phone Number");
         model.addColumn("Register Date");
 
-        model.addRow(new Object[]{"Zaki Abu Raya","0595078069","15-12-2022"});
+        ArrayList<String> studentsArrayList = FileOperation.storage("students.txt");
 
+        for (String row : studentsArrayList) {
+            String[] rowSub = row.split("#");
+            String[] rowSubSub0 = rowSub[0].split(":");
+            String[] rowSubSub1 = rowSub[1].split(":");
+            String[] rowSubSub2 = rowSub[2].split(":");
+            String[] rowSubSub3 = rowSub[3].split(":");
 
+            model.addRow(new Object[]{rowSubSub1[1], rowSubSub2[1], rowSubSub3[1]});
+        }
+        studentsTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                jTableMouseClicked(e);
 
+            }
+        });
 
     }
 
     @Override
     public void actionPerformed(ActionEvent event) {
 
-        if(event.getSource() == backButton){
+        if (event.getSource() == chooseDateButton) {
+            registrationDateTextField.setText(new DatePicker(this).setPickedDate());
+        }
+
+        if (event.getSource() == backButton) {
             this.setVisible(false);
         }
 
-        if(event.getSource() == showStudentDetailsButton){
-            getDetailsUser = new GetDetailsUser(this);
-            getDetailsUser.setVisible(true);
+        if (event.getSource() == showStudentDetailsButton) {
+            if (studentsTable.getSelectedRowCount() == 1) {
+
+                //get id for student
+                ArrayList<String> studentsArrayList = FileOperation.storage("students.txt");
+                String subRow[] = new String[4];
+                for (String row : studentsArrayList) {
+                    if (row.contains(oldName)) {
+                        subRow = row.split("#");
+                        break;
+                    }
+                }
+                try {
+                    String[] subSubNameRow = subRow[1].split(":");
+
+
+                    //get Details for user
+                    getDetailsUser = new GetDetailsUser(this, subSubNameRow[1]);
+                    getDetailsUser.setVisible(true);
+
+                } catch (Exception exception) {
+                    System.out.println(exception.getMessage());
+                }
+            } else {
+                if (studentsTable.getRowCount() == 0) {
+                    JOptionPane.showMessageDialog(null, "Table is Empty..");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Please select single row for display details..");
+                }
+            }
         }
+
+
+        if (event.getSource() == updateButton) {
+            DefaultTableModel studentDefaltTableModel = (DefaultTableModel) studentsTable.getModel();
+
+            if (studentsTable.getSelectedRowCount() == 1) {
+                String name = nameTextField.getText().trim();
+                String phone = phoneNumberTextField.getText().trim();
+                String date = registrationDateTextField.getText().trim();
+
+                if (Operation.isPhoneNumber(phone) && Operation.isDate(date) && !name.isEmpty() && !phone.isEmpty() && !date.isEmpty()) {
+
+
+                    studentDefaltTableModel.setValueAt(name, studentsTable.getSelectedRow(), 0);
+                    studentDefaltTableModel.setValueAt(phone, studentsTable.getSelectedRow(), 1);
+                    studentDefaltTableModel.setValueAt(date, studentsTable.getSelectedRow(), 2);
+
+                    JOptionPane.showMessageDialog(null, "Update Successfully..");
+                    nameTextField.setText("");
+                    phoneNumberTextField.setText("");
+                    registrationDateTextField.setText("");
+
+                    ArrayList<String> studentsArrayList = FileOperation.storage("students.txt");
+                    int index = 0;
+                    String subRow[] = new String[4];
+                    for (String row : studentsArrayList) {
+                        if (row.contains(oldName)) {
+                            subRow = row.split("#");
+                            index = studentsArrayList.indexOf(row);
+                            break;
+                        }
+                    }
+                    String[] subSubIDRow = subRow[0].split(":");
+                    studentsArrayList.set(index, "id:" + subSubIDRow[1] + "#" + "name:" + name + "#" + "phone:" + phone + "#" + "date:" + date);
+                    FileOperation.writeToFile("students.txt", studentsArrayList);
+                } else {
+                    JOptionPane.showMessageDialog(null, "enter phone number in phone field, date in date field and text in name field");
+                }
+            } else {
+                if (studentsTable.getRowCount() == 0) {
+                    JOptionPane.showMessageDialog(null, "Table is Empty..");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Please select single row for update..");
+                }
+            }
+        }
+
+
+        if (event.getSource() == deleteButton) {
+            DefaultTableModel studentDefaltTableModel = (DefaultTableModel) studentsTable.getModel();
+
+            if (studentsTable.getSelectedRowCount() == 1) {
+                studentDefaltTableModel.removeRow(studentsTable.getSelectedRow());
+
+                ArrayList<String> studentsArrayList = FileOperation.storage("students.txt");
+                int index = 0;
+                for (String row : studentsArrayList) {
+                    if (row.contains(oldName)) {
+                        index = studentsArrayList.indexOf(row);
+                        break;
+                    }
+                }
+                studentsArrayList.remove(index);
+                FileOperation.writeToFile("students.txt", studentsArrayList);
+                JOptionPane.showMessageDialog(null,"student id deleted");
+                nameTextField.setText("");
+                phoneNumberTextField.setText("");
+                registrationDateTextField.setText("");
+            } else {
+                if (studentsTable.getRowCount() == 0) {
+                    JOptionPane.showMessageDialog(null, "Table is Empty..");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Please select single row for delete..");
+                }
+            }
+        }
+
+    }
+
+    private void jTableMouseClicked(MouseEvent event) {
+
+        DefaultTableModel studentDefaltTableModel = (DefaultTableModel) studentsTable.getModel();
+
+        String name = studentDefaltTableModel.getValueAt(studentsTable.getSelectedRow(), 0).toString();
+        oldName = name;
+        String phone = studentDefaltTableModel.getValueAt(studentsTable.getSelectedRow(), 1).toString();
+        String date = studentDefaltTableModel.getValueAt(studentsTable.getSelectedRow(), 2).toString();
+
+        //set to textField
+        nameTextField.setText(name);
+        phoneNumberTextField.setText(phone);
+        registrationDateTextField.setText(date);
 
     }
 }

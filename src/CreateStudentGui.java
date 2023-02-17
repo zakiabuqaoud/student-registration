@@ -25,7 +25,7 @@ public class CreateStudentGui extends JFrame implements ActionListener {
         setVisible(true);
         setSize(1000, 600);
         setResizable(true);
-        container.setBackground(Theme.lightPurpleColor);
+        container.setBackground(Theme.lightBlueColor);
 //        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         /////////////////////////////////////////////////////
         //TextFiled
@@ -63,23 +63,23 @@ public class CreateStudentGui extends JFrame implements ActionListener {
 
         //Button
         createButton = new JButton("Create");
-        createButton.setBackground(Theme.darkPurpleColor);
+        createButton.setBackground(Theme.lightBrownColor);
         createButton.setForeground(Theme.blackColor);
         createButton.setFont(Theme.fontSmallBold);
 
 
         resetButton = new JButton("Reset");
-        resetButton.setBackground(Theme.darkPurpleColor);
+        resetButton.setBackground(Theme.lightBrownColor);
         resetButton.setForeground(Theme.blackColor);
         resetButton.setFont(Theme.fontSmallBold);
 
         backButton = new JButton("Back");
-        backButton.setBackground(Theme.darkPurpleColor);
+        backButton.setBackground(Theme.lightBrownColor);
         backButton.setForeground(Theme.blackColor);
         backButton.setFont(Theme.fontSmallBold);
 
         addDate = new JButton("+");
-        addDate.setBackground(Theme.darkPurpleColor);
+        addDate.setBackground(Theme.lightBrownColor);
         addDate.setForeground(Theme.blackColor);
         addDate.setFont(Theme.fontSmallBold);
 

@@ -19,7 +19,7 @@ public class MainGui extends JFrame implements ActionListener {
         setLayout(null);
         setVisible(true);
         setSize(1000, 700);
-        setResizable(true);
+        setResizable(false);
         container.setBackground(Theme.lightBlueColor);
 
 
@@ -85,9 +85,6 @@ public class MainGui extends JFrame implements ActionListener {
 
         createStudentButton.addActionListener(this);
         showStudentsData.addActionListener(this);
-
-
-
 
     }
 

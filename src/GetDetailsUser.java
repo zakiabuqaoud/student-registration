@@ -23,7 +23,7 @@ public class GetDetailsUser extends JFrame implements ActionListener {
 
 
     GetAllStudentGui prop;
-    public GetDetailsUser(GetAllStudentGui prop){
+    public GetDetailsUser(GetAllStudentGui prop, String name){
         this.prop = prop;
         container = getContentPane();
 
@@ -32,7 +32,7 @@ public class GetDetailsUser extends JFrame implements ActionListener {
         setVisible(true);
         setSize(1000, 700);
         setResizable(true);
-        container.setBackground(Theme.lightPurpleColor);
+        container.setBackground(Theme.lightBlueColor);
 
 
         // JTable
@@ -56,7 +56,7 @@ public class GetDetailsUser extends JFrame implements ActionListener {
         paymentModel.addColumn("Payment Date");
 
         //JLabel
-        titleLabel = new JLabel("Student Name");
+        titleLabel = new JLabel(name);
         titleLabel.setFont(Theme.bigFont);
         titleLabel.setForeground(Theme.blackColor);
 
@@ -108,42 +108,42 @@ public class GetDetailsUser extends JFrame implements ActionListener {
 
         //JButton
         addLevelButton = new JButton("Add");
-        addLevelButton.setBackground(Theme.darkPurpleColor);
+        addLevelButton.setBackground(Theme.lightBrownColor);
         addLevelButton.setForeground(Theme.blackColor);
         addLevelButton.setFont(Theme.smallFont);
 
         updateLevelButton = new JButton("Update");
-        updateLevelButton.setBackground(Theme.darkPurpleColor);
+        updateLevelButton.setBackground(Theme.lightBrownColor);
         updateLevelButton.setForeground(Theme.blackColor);
         updateLevelButton.setFont(Theme.smallFont);
 
         deleteLevelButton = new JButton("Delete");
-        deleteLevelButton.setBackground(Theme.darkPurpleColor);
+        deleteLevelButton.setBackground(Theme.lightBrownColor);
         deleteLevelButton.setForeground(Theme.blackColor);
         deleteLevelButton.setFont(Theme.smallFont);
 
         addPaymentButton = new JButton("Add Payment");
-        addPaymentButton.setBackground(Theme.darkPurpleColor);
+        addPaymentButton.setBackground(Theme.lightBrownColor);
         addPaymentButton.setForeground(Theme.blackColor);
         addPaymentButton.setFont(Theme.smallFont);
 
         updatePaymentButton = new JButton("Update Payment");
-        updatePaymentButton.setBackground(Theme.darkPurpleColor);
+        updatePaymentButton.setBackground(Theme.lightBrownColor);
         updatePaymentButton.setForeground(Theme.blackColor);
         updatePaymentButton.setFont(Theme.smallFont);
 
         deletePaymentButton = new JButton("Delete Payment");
-        deletePaymentButton.setBackground(Theme.darkPurpleColor);
+        deletePaymentButton.setBackground(Theme.lightBrownColor);
         deletePaymentButton.setForeground(Theme.blackColor);
         deletePaymentButton.setFont(Theme.smallFont);
 
         backButton = new JButton("Back");
-        backButton.setBackground(Theme.darkPurpleColor);
+        backButton.setBackground(Theme.lightBrownColor);
         backButton.setForeground(Theme.blackColor);
         backButton.setFont(Theme.fontSmallBold);
 
         choosePaymentDateButton = new JButton("+");
-        choosePaymentDateButton.setBackground(Theme.darkPurpleColor);
+        choosePaymentDateButton.setBackground(Theme.lightBrownColor);
         choosePaymentDateButton.setForeground(Theme.blackColor);
 
         addLevelButton.setBounds(30,216,100,28);
@@ -177,6 +177,9 @@ public class GetDetailsUser extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent event) {
+        if(event.getSource() == choosePaymentDateButton){
+            paymentDateTextField.setText(new DatePicker(this).setPickedDate());
+        }
 
         if(event.getSource() == backButton){
             this.setVisible(false);
