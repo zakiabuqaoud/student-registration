@@ -261,7 +261,7 @@ public class GetDetailsUser extends JFrame implements ActionListener {
                     level.addLevelInFile(level);
                 }
             } else if (levelsCompoBox.getSelectedItem().toString() == "C2") {
-                if (FileOperation.levelIsExist("1", studentID)) {
+                if (FileOperation.levelIsExist("6", studentID)) {
                     JOptionPane.showMessageDialog(null, "error", "level exist", 0);
                 } else {
                     DefaultTableModel levelModel = (DefaultTableModel) levelsTable.getModel();
