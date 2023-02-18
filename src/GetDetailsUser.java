@@ -28,6 +28,7 @@ public class GetDetailsUser extends JFrame implements ActionListener {
     String studentID;
     String levelName;
     GetAllStudentGui prop;
+    String paymentRowID;
 
     public GetDetailsUser(GetAllStudentGui prop, String id, String name) {
         this.prop = prop;
@@ -65,9 +66,18 @@ public class GetDetailsUser extends JFrame implements ActionListener {
             levelModel.addRow(new Object[]{string});
         }
 
-
+        paymentModel.addColumn("id");
         paymentModel.addColumn("Payment");
         paymentModel.addColumn("Payment Date");
+        ArrayList<String> paymentsForStudent = FileOperation.displayPayments(studentID);
+        for (String row : paymentsForStudent) {
+            String[] subRow = row.split("#");
+            String[] subSubPaymentIDRow = subRow[0].split(":");
+            String[] subSubPaymentRow = subRow[1].split(":");
+            String[] subSubPaymentDateRow = subRow[2].split(":");
+            paymentModel.addRow(new Object[]{subSubPaymentIDRow[1], subSubPaymentRow[1], subSubPaymentDateRow[1]});
+        }
+
 
         //JLabel
         titleLabel = new JLabel(studentName);
@@ -200,8 +210,15 @@ public class GetDetailsUser extends JFrame implements ActionListener {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+                DefaultTableModel paymentDefaltTableModel = (DefaultTableModel) paymentsTable.getModel();
 
+                paymentRowID = paymentDefaltTableModel.getValueAt(paymentsTable.getSelectedRow(), 0).toString();
+                String payment = paymentDefaltTableModel.getValueAt(paymentsTable.getSelectedRow(), 1).toString();
+                String paymentDate = paymentDefaltTableModel.getValueAt(paymentsTable.getSelectedRow(), 2).toString();
 
+                //set to textField
+                paymentTextField.setText(payment);
+                paymentDateTextField.setText(paymentDate);
             }
         });
 
@@ -261,7 +278,7 @@ public class GetDetailsUser extends JFrame implements ActionListener {
                     level.addLevelInFile(level);
                 }
             } else if (levelsCompoBox.getSelectedItem().toString() == "C2") {
-                if (FileOperation.levelIsExist("1", studentID)) {
+                if (FileOperation.levelIsExist("6", studentID)) {
                     JOptionPane.showMessageDialog(null, "error", "level exist", 0);
                 } else {
                     DefaultTableModel levelModel = (DefaultTableModel) levelsTable.getModel();
@@ -278,7 +295,7 @@ public class GetDetailsUser extends JFrame implements ActionListener {
 
             if (levelsTable.getSelectedRowCount() == 1) {
                 levelDefaltTableModel.removeRow(levelsTable.getSelectedRow());
-                FileOperation.deleteLevel(getLevelId(levelName),studentID);
+                FileOperation.deleteLevel(getLevelId(levelName), studentID);
             } else {
                 if (levelsTable.getRowCount() == 0) {
                     JOptionPane.showMessageDialog(null, "Table is Empty..");
@@ -287,28 +304,85 @@ public class GetDetailsUser extends JFrame implements ActionListener {
                 }
             }
         }
+        if (event.getSource() == addPaymentButton) {
+            String paymentString = paymentTextField.getText().trim();
+            String datePayment = paymentDateTextField.getText().trim();
+            if (!paymentString.isEmpty() && !datePayment.isEmpty() && Operation.isDate(datePayment)) {
+                String index = FileOperation.getID(1);
+                DefaultTableModel levelModel = (DefaultTableModel) paymentsTable.getModel();
+                levelModel.addRow(new Object[]{index, paymentString, datePayment});
+                Payment payment = new Payment(index, paymentString, datePayment, studentID);
+                payment.addPaymentInFile(payment);
+                paymentTextField.setText("");
+                paymentDateTextField.setText("");
+            } else {
+                JOptionPane.showMessageDialog(null, "enter text in payment feild and date in date field", "error", 0);
+            }
+        }
+        if (event.getSource() == updatePaymentButton) {
+            DefaultTableModel paymentDefaltTableModel = (DefaultTableModel) paymentsTable.getModel();
+            if (paymentsTable.getSelectedRowCount() == 1) {
+                String payment = paymentTextField.getText().trim();
+                String paymentDate = paymentDateTextField.getText().trim();
+                if (!payment.isEmpty() && !paymentDate.isEmpty() && Operation.isDate(paymentDate)) {
+                    String id = paymentDefaltTableModel.getValueAt(paymentsTable.getSelectedRow(), 0).toString();
+                    paymentDefaltTableModel.setValueAt(payment, paymentsTable.getSelectedRow(), 1);
+                    paymentDefaltTableModel.setValueAt(paymentDate, paymentsTable.getSelectedRow(), 2);
+
+                    JOptionPane.showMessageDialog(null, "Update Successfully..");
+                    paymentTextField.setText("");
+                    paymentDateTextField.setText("");
+                    FileOperation.updatePayment(id, payment, paymentDate, studentID);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Enter text in payment field and date in date field", "error", 0);
+                }
+            } else {
+                if (paymentsTable.getRowCount() == 0) {
+                    JOptionPane.showMessageDialog(null, "Table is Empty..");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Please select single row for update..");
+                }
+            }
+        }
+        if (event.getSource() == deletePaymentButton) {
+            DefaultTableModel paymentDefaltTableModel = (DefaultTableModel) paymentsTable.getModel();
+            if (paymentsTable.getSelectedRowCount() == 1) {
+                paymentDefaltTableModel.removeRow(paymentsTable.getSelectedRow());
+                FileOperation.deleteItem("payments.txt",paymentRowID);
+                JOptionPane.showMessageDialog(null, "Delete Successful..");
+            } else {
+                if (paymentsTable.getRowCount() == 0) {
+                    JOptionPane.showMessageDialog(null, "Table is Empty..");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Please select single row for update..");
+                }
+            }
+
+        }
+
+
         if (event.getSource() == backButton) {
             this.setVisible(false);
         }
 
     }
 
-    String getLevelId(String levelNameParameter){
-        if(levelNameParameter.equals("A1")){
+    String getLevelId(String levelNameParameter) {
+        if (levelNameParameter.equals("A1")) {
             return "1";
-        }else if(levelNameParameter.equals("A2")){
+        } else if (levelNameParameter.equals("A2")) {
             return "2";
 
-        }else if(levelNameParameter.equals("B1")){
+        } else if (levelNameParameter.equals("B1")) {
             return "3";
 
-        }else if(levelNameParameter.equals("B2")){
+        } else if (levelNameParameter.equals("B2")) {
             return "4";
 
-        }else if(levelNameParameter.equals("C1")){
+        } else if (levelNameParameter.equals("C1")) {
             return "5";
 
-        }else if(levelNameParameter.equals("C2")){
+        } else if (levelNameParameter.equals("C2")) {
             return "6";
         }
         return "";

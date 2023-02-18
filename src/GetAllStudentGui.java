@@ -193,9 +193,12 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
                 ArrayList<String> studentsArrayList = FileOperation.storage("students.txt");
                 String subRow[] = new String[4];
                 for (String row : studentsArrayList) {
+                    try{
                     if (row.contains(oldName)) {
                         subRow = row.split("#");
                         break;
+                    }}catch (Exception exception){
+                        System.out.println(exception.getMessage());
                     }
                 }
                 try {

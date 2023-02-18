@@ -9,16 +9,33 @@ public class FileOperation {
     public static void deleteItem(String fileName, String id) {
         ArrayList<String> arrayList = storage(fileName);
         String[] subData;
+        String[] subSubIDData;
+        int index = 0;
 
         for (int i = 0; i < arrayList.size(); i++) {
             subData = arrayList.get(i).split("#");
-            if (subData[0].equals(id)) {
-                arrayList.remove(i);
-                writeToFile(fileName, arrayList);
+            subSubIDData = subData[0].split(":");
+            if (subSubIDData[1].equals(id)) {
+                index = i;
             }
-
-
         }
+        arrayList.remove(index);
+        writeToFile(fileName, arrayList);
+    }
+    public static void updatePayment(String id,String payment,String paymentDate, String studentID ){
+        ArrayList<String> arrayList = storage("payments.txt");
+        String[] subData;
+        String[] subSubIDData;
+        int index = 0;
+        for (int i = 0; i < arrayList.size(); i++) {
+            subData = arrayList.get(i).split("#");
+            subSubIDData = subData[0].split(":");
+            if (subSubIDData[1].equals(id)) {
+                index = i;
+            }
+        }
+        arrayList.set(index,"id:"+ id+"#"+"payment:"+payment+"#"+"date:"+ paymentDate+"#"+ "studentId:"+studentID);
+        writeToFile("payments.txt", arrayList);
 
 
     }
@@ -129,7 +146,6 @@ public class FileOperation {
                     levels.add("A2");
                 } else if (subSubRowLevelID[1].equals("3")) {
                     levels.add("B1");
-
                 } else if (subSubRowLevelID[1].equals("4")) {
                     levels.add("B2");
 
@@ -162,5 +178,19 @@ public class FileOperation {
         levelsAndStudentsIDs.remove(index);
         writeToFile("levelidWithstudentid.txt",levelsAndStudentsIDs);
 
+    }
+
+    public static ArrayList<String> displayPayments(String studentID){
+        ArrayList<String> paymentsArrayList = new ArrayList<String>();
+        ArrayList<String> payments = storage("payments.txt");
+        for (String row : payments) {
+            String[] subRow = row.split("#");
+            String studentIDInFile = subRow[3];
+            String[] subStudentIDInFile = studentIDInFile.split(":");
+            if(subStudentIDInFile[1].equals(studentID)){
+                paymentsArrayList.add(row);
+            }
+        }
+        return paymentsArrayList;
     }
 }
