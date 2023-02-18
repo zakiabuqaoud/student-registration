@@ -59,7 +59,7 @@ public class FileOperation {
         String countRow = countArrayList.get(0);
         String[] countsArray = countRow.split("#");
         //is student id
-        if(num == 0){
+        if (num == 0) {
             finalCount = countsArray[0];
             String paymentCount = countsArray[1];
             String levelAndStudentCount = countsArray[2];
@@ -71,7 +71,7 @@ public class FileOperation {
             writeToFile("count.txt", countArrayList);
         }
         //is payment id
-        if(num == 1){
+        if (num == 1) {
             finalCount = countsArray[1];
             String studentCount = countsArray[0];
             String levelAndStudentCount = countsArray[2];
@@ -84,7 +84,7 @@ public class FileOperation {
         }
 
         //level and student id
-        if(num ==2){
+        if (num == 2) {
             finalCount = countsArray[2];
             String studentCount = countsArray[0];
             String paymentCount = countsArray[1];
@@ -96,5 +96,71 @@ public class FileOperation {
             writeToFile("count.txt", countArrayList);
         }
         return finalCount;
+    }
+
+    public static Boolean levelIsExist(String levelID, String studentID) {
+        ArrayList<String> levelsAndStudentsIDs = storage("levelidWithstudentid.txt");
+        for (String row : levelsAndStudentsIDs) {
+            String[] subRow = row.split("#");
+            String levelIDInFile = subRow[1];
+            String studentIDInFile = subRow[2];
+            String subSubRowLevelID[] = levelIDInFile.split(":");
+            String subSubRowStudentID[] = studentIDInFile.split(":");
+            if (levelID.equals(subSubRowLevelID[1]) && studentID.equals(subSubRowStudentID[1])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static ArrayList<String> displayLevels(String studentID) {
+        ArrayList<String> levels = new ArrayList<String>();
+        ArrayList<String> levelsAndStudentsIDs = storage("levelidWithstudentid.txt");
+        for (String row : levelsAndStudentsIDs) {
+            String[] subRow = row.split("#");
+            String levelIDInFile = subRow[1];
+            String studentIDInFile = subRow[2];
+            String subSubRowLevelID[] = levelIDInFile.split(":");
+            String subSubRowStudentID[] = studentIDInFile.split(":");
+            if (subSubRowStudentID[1].equals(studentID)) {
+                if (subSubRowLevelID[1].equals("1")) {
+                    levels.add("A1");
+                } else if (subSubRowLevelID[1].equals("2")) {
+                    levels.add("A2");
+                } else if (subSubRowLevelID[1].equals("3")) {
+                    levels.add("B1");
+
+                } else if (subSubRowLevelID[1].equals("4")) {
+                    levels.add("B2");
+
+                } else if (subSubRowLevelID[1].equals("5")) {
+                    levels.add("C1");
+
+                } else if (subSubRowLevelID[1].equals("6")) {
+                    levels.add("C2");
+                }
+            }
+        }
+
+        return levels;
+    }
+
+    public static void deleteLevel(String levelID, String studentID) {
+        ArrayList<String> levelsAndStudentsIDs = storage("levelidWithstudentid.txt");
+        int index = 0;
+        for (String row : levelsAndStudentsIDs) {
+            String[] subRow = row.split("#");
+            String levelIDInFile = subRow[1];
+            String studentIDInFile = subRow[2];
+            String subSubRowLevelID[] = levelIDInFile.split(":");
+            String subSubRowStudentID[] = studentIDInFile.split(":");
+            if (levelID.equals(subSubRowLevelID[1]) && studentID.equals(subSubRowStudentID[1])) {
+                index = levelsAndStudentsIDs.indexOf(row);
+                break;
+            }
+        }
+        levelsAndStudentsIDs.remove(index);
+        writeToFile("levelidWithstudentid.txt",levelsAndStudentsIDs);
+
     }
 }

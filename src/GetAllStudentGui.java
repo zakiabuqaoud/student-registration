@@ -199,11 +199,12 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
                     }
                 }
                 try {
+                    String[] subSubIDRow = subRow[0].split(":");
                     String[] subSubNameRow = subRow[1].split(":");
 
 
                     //get Details for user
-                    getDetailsUser = new GetDetailsUser(this, subSubNameRow[1]);
+                    getDetailsUser = new GetDetailsUser(this,subSubIDRow[1], subSubNameRow[1]);
                     getDetailsUser.setVisible(true);
 
                 } catch (Exception exception) {
