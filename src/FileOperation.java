@@ -193,4 +193,14 @@ public class FileOperation {
         }
         return paymentsArrayList;
     }
+
+    public static Boolean checkNameNotExist(String name){
+        ArrayList<String> studentData = storage("students.txt");
+        for(String row: studentData){
+            if(row.contains(name)){
+                return false;
+            }
+        }
+        return true;
+    }
 }

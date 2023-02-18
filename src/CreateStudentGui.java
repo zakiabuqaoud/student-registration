@@ -170,6 +170,7 @@ public class CreateStudentGui extends JFrame implements ActionListener {
             int validation2 = -1;
             int validation3 = -1;
             int validation4 = -1;
+            int validation5 =-1;
 
 
             if (nameTextField.getText().trim().isEmpty() || phoneTextField.getText().trim().isEmpty() || paymentTextField.getText().trim().isEmpty() || paymentDateTextField.getText().trim().isEmpty())
@@ -197,8 +198,14 @@ public class CreateStudentGui extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(null, "must you enter number in  phone number ", "Error", 0);
             }
 
+            if(FileOperation.checkNameNotExist(nameTextField.getText().trim())){
+                validation5 = 1;
+            }else{
+                JOptionPane.showMessageDialog(null, "This FullName is exist", "Error", 0);
+            }
+
             // create student, level, payment
-            if (validation1 == 1 && validation2 == 1 && validation3 == 1 && validation4 == 1) {
+            if (validation1 == 1 && validation2 == 1 && validation3 == 1 && validation4 == 1 && validation5 ==1) {
                 Student student = new Student(FileOperation.getID(0), nameTextField.getText(), phoneTextField.getText(), paymentDateTextField.getText());
                 student.addStudentInFile();
 
