@@ -5,7 +5,7 @@ public class Operation {
     }
 
     public static boolean checkIsNotHash(String text){
-        if( text.contains("#") && text.contains(":")){
+        if( text.contains("#") || text.contains(":")){
             return false;
         }
         return true;

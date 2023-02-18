@@ -1,5 +1,6 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -173,6 +174,28 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
             }
         });
 
+        searchTextField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                super.keyPressed(e);
+                DefaultTableModel defaultTableModel = (DefaultTableModel) studentsTable.getModel();
+                TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel>(defaultTableModel);
+                studentsTable.setRowSorter(sorter);
+                sorter.setRowFilter(RowFilter.regexFilter(searchTextField.getText().trim()));
+            }
+        });
+        searchTextField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                super.keyReleased(e);
+                DefaultTableModel defaultTableModel = (DefaultTableModel) studentsTable.getModel();
+                TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel>(defaultTableModel);
+                studentsTable.setRowSorter(sorter);
+                sorter.setRowFilter(RowFilter.regexFilter(searchTextField.getText().trim()));
+            }
+        });
+
+
     }
 
     @Override
@@ -193,9 +216,12 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
                 ArrayList<String> studentsArrayList = FileOperation.storage("students.txt");
                 String subRow[] = new String[4];
                 for (String row : studentsArrayList) {
+                    try{
                     if (row.contains(oldName)) {
                         subRow = row.split("#");
                         break;
+                    }}catch (Exception exception){
+                        System.out.println(exception.getMessage());
                     }
                 }
                 try {
@@ -228,7 +254,7 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
                 String phone = phoneNumberTextField.getText().trim();
                 String date = registrationDateTextField.getText().trim();
 
-                if (Operation.isPhoneNumber(phone) && Operation.isDate(date) && !name.isEmpty() && !phone.isEmpty() && !date.isEmpty()) {
+                if (Operation.isPhoneNumber(phone) && Operation.isDate(date) && !name.isEmpty() && !phone.isEmpty() && !date.isEmpty() && Operation.checkIsNotHash(name)&&Operation.checkIsNotHash(date)&&Operation.checkIsNotHash(phone)) {
 
 
                     studentDefaltTableModel.setValueAt(name, studentsTable.getSelectedRow(), 0);
@@ -254,7 +280,7 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
                     studentsArrayList.set(index, "id:" + subSubIDRow[1] + "#" + "name:" + name + "#" + "phone:" + phone + "#" + "date:" + date);
                     FileOperation.writeToFile("students.txt", studentsArrayList);
                 } else {
-                    JOptionPane.showMessageDialog(null, "enter phone number in phone field, date in date field and text in name field");
+                    JOptionPane.showMessageDialog(null, "enter phone number in phone field, date in date field and text in name field","error",0);
                 }
             } else {
                 if (studentsTable.getRowCount() == 0) {
@@ -271,7 +297,7 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
 
             if (studentsTable.getSelectedRowCount() == 1) {
                 studentDefaltTableModel.removeRow(studentsTable.getSelectedRow());
-
+                FileOperation.deletePaymentAndLevelForStudent(oldName);
                 ArrayList<String> studentsArrayList = FileOperation.storage("students.txt");
                 int index = 0;
                 for (String row : studentsArrayList) {

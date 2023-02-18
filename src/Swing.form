@@ -15,6 +15,12 @@
         </constraints>
         <properties/>
       </component>
+      <component id="d6e44" class="javax.swing.JTextField" binding="textField1" default-binding="true">
+        <constraints>
+          <card name="Card2"/>
+        </constraints>
+        <properties/>
+      </component>
     </children>
   </grid>
 </form>

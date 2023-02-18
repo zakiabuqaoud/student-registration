@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -7,6 +9,7 @@ public class Swing extends JFrame{
 
     private JPanel panel1;
     private JTable table1;
+    private JTextField textField1;
 
     public Swing(){
         Container container = getContentPane();
@@ -20,6 +23,14 @@ public class Swing extends JFrame{
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
             }
+        });
+        textField1.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                super.keyPressed(e);
+            }
+        });
+        textField1.addKeyListener(new KeyAdapter() {
         });
     }
 
