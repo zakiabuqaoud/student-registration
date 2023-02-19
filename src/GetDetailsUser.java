@@ -307,7 +307,7 @@ public class GetDetailsUser extends JFrame implements ActionListener {
         if (event.getSource() == addPaymentButton) {
             String paymentString = paymentTextField.getText().trim();
             String datePayment = paymentDateTextField.getText().trim();
-            if (!paymentString.isEmpty() && !datePayment.isEmpty() && Operation.isDate(datePayment)) {
+            if (!paymentString.isEmpty() && !datePayment.isEmpty() && Operation.isDate(datePayment) && Operation.checkIsNotHash(paymentString)&&Operation.checkIsNotHash(datePayment)) {
                 String index = FileOperation.getID(1);
                 DefaultTableModel levelModel = (DefaultTableModel) paymentsTable.getModel();
                 levelModel.addRow(new Object[]{index, paymentString, datePayment});
@@ -324,7 +324,7 @@ public class GetDetailsUser extends JFrame implements ActionListener {
             if (paymentsTable.getSelectedRowCount() == 1) {
                 String payment = paymentTextField.getText().trim();
                 String paymentDate = paymentDateTextField.getText().trim();
-                if (!payment.isEmpty() && !paymentDate.isEmpty() && Operation.isDate(paymentDate)) {
+                if (!payment.isEmpty() && !paymentDate.isEmpty() && Operation.isDate(paymentDate) && Operation.checkIsNotHash(payment)&&Operation.checkIsNotHash(paymentDate)) {
                     String id = paymentDefaltTableModel.getValueAt(paymentsTable.getSelectedRow(), 0).toString();
                     paymentDefaltTableModel.setValueAt(payment, paymentsTable.getSelectedRow(), 1);
                     paymentDefaltTableModel.setValueAt(paymentDate, paymentsTable.getSelectedRow(), 2);
