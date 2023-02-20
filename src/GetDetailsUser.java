@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,7 +18,7 @@ public class GetDetailsUser extends JFrame implements ActionListener {
     JTable levelsTable, paymentsTable;
     JScrollPane levelScroll, paymentScroll;
 
-    JButton addLevelButton, updateLevelButton, deleteLevelButton, addPaymentButton, updatePaymentButton, deletePaymentButton, backButton, choosePaymentDateButton;
+    JButton addLevelButton, deleteLevelButton, addPaymentButton, updatePaymentButton, deletePaymentButton, backButton, choosePaymentDateButton;
     JLabel titleLabel, levelLabel, paymentLabel, paymentDateLabel;
 
     JTextField paymentTextField, paymentDateTextField;
@@ -42,7 +43,9 @@ public class GetDetailsUser extends JFrame implements ActionListener {
         setVisible(true);
         setSize(1000, 700);
         setResizable(true);
+        setLocationRelativeTo(null);
         container.setBackground(Theme.lightBlueColor);
+
 
 
         // JTable
@@ -59,6 +62,11 @@ public class GetDetailsUser extends JFrame implements ActionListener {
 
         container.add(levelScroll);
         container.add(paymentScroll);
+
+        levelsTable.setFont(new Font("Cleaver's_Juvenia_Bloc...",Font.PLAIN , 18));
+        paymentsTable.setFont(new Font("Cleaver's_Juvenia_Bloc...",Font.PLAIN , 18));
+
+
 
         levelModel.addColumn("Level");
         ArrayList<String> levelsForStudent = FileOperation.displayLevels(studentID);
@@ -77,6 +85,16 @@ public class GetDetailsUser extends JFrame implements ActionListener {
             String[] subSubPaymentDateRow = subRow[2].split(":");
             paymentModel.addRow(new Object[]{subSubPaymentIDRow[1], subSubPaymentRow[1], subSubPaymentDateRow[1]});
         }
+        DefaultTableCellRenderer cellRenderer;
+        paymentsTable.getColumnModel().getColumn(0).setPreferredWidth(50);
+        paymentsTable.getColumnModel().getColumn(1).setPreferredWidth(400);
+        paymentsTable.getColumnModel().getColumn(2).setPreferredWidth(400);
+        cellRenderer = new DefaultTableCellRenderer();
+        cellRenderer.setHorizontalAlignment(JLabel.CENTER);
+        paymentsTable.getColumnModel().getColumn(0).setCellRenderer(cellRenderer);
+        paymentsTable.getColumnModel().getColumn(1).setCellRenderer(cellRenderer);
+        paymentsTable.getColumnModel().getColumn(2).setCellRenderer(cellRenderer);
+        levelsTable.getColumnModel().getColumn(0).setCellRenderer(cellRenderer);
 
 
         //JLabel
@@ -136,11 +154,6 @@ public class GetDetailsUser extends JFrame implements ActionListener {
         addLevelButton.setForeground(Theme.blackColor);
         addLevelButton.setFont(Theme.smallFont);
 
-        updateLevelButton = new JButton("Update");
-        updateLevelButton.setBackground(Theme.lightBrownColor);
-        updateLevelButton.setForeground(Theme.blackColor);
-        updateLevelButton.setFont(Theme.smallFont);
-
         deleteLevelButton = new JButton("Delete");
         deleteLevelButton.setBackground(Theme.lightBrownColor);
         deleteLevelButton.setForeground(Theme.blackColor);
@@ -169,18 +182,17 @@ public class GetDetailsUser extends JFrame implements ActionListener {
         choosePaymentDateButton = new JButton("+");
         choosePaymentDateButton.setBackground(Theme.lightBrownColor);
         choosePaymentDateButton.setForeground(Theme.blackColor);
+        choosePaymentDateButton.setFont(Theme.fontSmallBold);
 
-        addLevelButton.setBounds(30, 216, 100, 28);
-        updateLevelButton.setBounds(140, 216, 100, 28);
-        deleteLevelButton.setBounds(250, 216, 100, 28);
+        addLevelButton.setBounds(30, 216, 150, 28);
+        deleteLevelButton.setBounds(200, 216, 150, 28);
         addPaymentButton.setBounds(400, 216, 190, 28);
         updatePaymentButton.setBounds(600, 216, 190, 28);
         deletePaymentButton.setBounds(800, 216, 170, 28);
         backButton.setBounds(815, 580, 150, 28);
-        choosePaymentDateButton.setBounds(925, 140, 45, 28);
+        choosePaymentDateButton.setBounds(925, 140, 47, 28);
 
         container.add(addLevelButton);
-        container.add(updateLevelButton);
         container.add(deleteLevelButton);
         container.add(addPaymentButton);
         container.add(updatePaymentButton);
@@ -189,7 +201,6 @@ public class GetDetailsUser extends JFrame implements ActionListener {
         container.add(choosePaymentDateButton);
 
         addLevelButton.addActionListener(this);
-        updateLevelButton.addActionListener(this);
         deleteLevelButton.addActionListener(this);
         addPaymentButton.addActionListener(this);
         updatePaymentButton.addActionListener(this);
@@ -233,58 +244,64 @@ public class GetDetailsUser extends JFrame implements ActionListener {
         if (event.getSource() == addLevelButton) {
             if (levelsCompoBox.getSelectedItem().toString() == "A1") {
                 if (FileOperation.levelIsExist("1", studentID)) {
-                    JOptionPane.showMessageDialog(null, "error", "level exist", 0);
+                    JOptionPane.showMessageDialog(null, "This Level Already Exists", "Invalid Entry", 0);
                 } else {
                     DefaultTableModel levelModel = (DefaultTableModel) levelsTable.getModel();
                     levelModel.addRow(new Object[]{"A1"});
                     LevelIDWithStudentID level = new LevelIDWithStudentID(FileOperation.getID(2), "1", studentID);
                     level.addLevelInFile(level);
+                    JOptionPane.showMessageDialog(null,"The Level Is Saved");
                 }
             } else if (levelsCompoBox.getSelectedItem().toString() == "A2") {
                 if (FileOperation.levelIsExist("2", studentID)) {
-                    JOptionPane.showMessageDialog(null, "error", "level exist", 0);
+                    JOptionPane.showMessageDialog(null, "This Level Already Exists", "Invalid Entry", 0);
                 } else {
                     DefaultTableModel levelModel = (DefaultTableModel) levelsTable.getModel();
                     levelModel.addRow(new Object[]{"A2"});
                     LevelIDWithStudentID level = new LevelIDWithStudentID(FileOperation.getID(2), "2", studentID);
                     level.addLevelInFile(level);
+                    JOptionPane.showMessageDialog(null,"The Level Is Saved");
                 }
             } else if (levelsCompoBox.getSelectedItem().toString() == "B1") {
                 if (FileOperation.levelIsExist("3", studentID)) {
-                    JOptionPane.showMessageDialog(null, "error", "level exist", 0);
+                    JOptionPane.showMessageDialog(null, "This Level Already Exists", "Invalid Entry", 0);
                 } else {
                     DefaultTableModel levelModel = (DefaultTableModel) levelsTable.getModel();
                     levelModel.addRow(new Object[]{"B1"});
                     LevelIDWithStudentID level = new LevelIDWithStudentID(FileOperation.getID(2), "3", studentID);
                     level.addLevelInFile(level);
+                    JOptionPane.showMessageDialog(null,"The Level Is Saved");
                 }
 
             } else if (levelsCompoBox.getSelectedItem().toString() == "B2") {
                 if (FileOperation.levelIsExist("4", studentID)) {
-                    JOptionPane.showMessageDialog(null, "error", "level exist", 0);
+                    JOptionPane.showMessageDialog(null, "This Level Already Exists", "Invalid Entry", 0);
                 } else {
                     DefaultTableModel levelModel = (DefaultTableModel) levelsTable.getModel();
                     levelModel.addRow(new Object[]{"B2"});
                     LevelIDWithStudentID level = new LevelIDWithStudentID(FileOperation.getID(2), "4", studentID);
                     level.addLevelInFile(level);
+                    JOptionPane.showMessageDialog(null,"The Level Is Saved");
                 }
             } else if (levelsCompoBox.getSelectedItem().toString() == "C1") {
                 if (FileOperation.levelIsExist("5", studentID)) {
-                    JOptionPane.showMessageDialog(null, "error", "level exist", 0);
+                    JOptionPane.showMessageDialog(null, "This Level Already Exists", "Invalid Entry", 0);
                 } else {
                     DefaultTableModel levelModel = (DefaultTableModel) levelsTable.getModel();
                     levelModel.addRow(new Object[]{"C1"});
                     LevelIDWithStudentID level = new LevelIDWithStudentID(FileOperation.getID(2), "5", studentID);
                     level.addLevelInFile(level);
+                    JOptionPane.showMessageDialog(null,"The Level Is Saved");
                 }
             } else if (levelsCompoBox.getSelectedItem().toString() == "C2") {
                 if (FileOperation.levelIsExist("6", studentID)) {
-                    JOptionPane.showMessageDialog(null, "error", "level exist", 0);
+                    JOptionPane.showMessageDialog(null, "This Level Already Exists", "Invalid Entry", 0);
                 } else {
                     DefaultTableModel levelModel = (DefaultTableModel) levelsTable.getModel();
                     levelModel.addRow(new Object[]{"C2"});
                     LevelIDWithStudentID level = new LevelIDWithStudentID(FileOperation.getID(2), "6", studentID);
                     level.addLevelInFile(level);
+                    JOptionPane.showMessageDialog(null,"The Level Is Saved");
                 }
 
             }
@@ -295,12 +312,13 @@ public class GetDetailsUser extends JFrame implements ActionListener {
 
             if (levelsTable.getSelectedRowCount() == 1) {
                 levelDefaltTableModel.removeRow(levelsTable.getSelectedRow());
+                JOptionPane.showMessageDialog(null,"Level Delete Successfully");
                 FileOperation.deleteLevel(getLevelId(levelName), studentID);
             } else {
                 if (levelsTable.getRowCount() == 0) {
-                    JOptionPane.showMessageDialog(null, "Table is Empty..");
+                    JOptionPane.showMessageDialog(null, "The Table Is Empty");
                 } else {
-                    JOptionPane.showMessageDialog(null, "Please select single row for delete..");
+                    JOptionPane.showMessageDialog(null, "Please Select Single Row For Delete This Level");
                 }
             }
         }
@@ -313,10 +331,11 @@ public class GetDetailsUser extends JFrame implements ActionListener {
                 levelModel.addRow(new Object[]{index, paymentString, datePayment});
                 Payment payment = new Payment(index, paymentString, datePayment, studentID);
                 payment.addPaymentInFile(payment);
+                JOptionPane.showMessageDialog(null,"The Payment Is Saved");
                 paymentTextField.setText("");
                 paymentDateTextField.setText("");
             } else {
-                JOptionPane.showMessageDialog(null, "enter text in payment feild and date in date field", "error", 0);
+                JOptionPane.showMessageDialog(null, "Payment Field Must Be a Text, Payment Date Must Be a Date", "Invalid Entry", 0);
             }
         }
         if (event.getSource() == updatePaymentButton) {
@@ -329,18 +348,18 @@ public class GetDetailsUser extends JFrame implements ActionListener {
                     paymentDefaltTableModel.setValueAt(payment, paymentsTable.getSelectedRow(), 1);
                     paymentDefaltTableModel.setValueAt(paymentDate, paymentsTable.getSelectedRow(), 2);
 
-                    JOptionPane.showMessageDialog(null, "Update Successfully..");
+                    JOptionPane.showMessageDialog(null, "Payment Update Successfully");
                     paymentTextField.setText("");
                     paymentDateTextField.setText("");
                     FileOperation.updatePayment(id, payment, paymentDate, studentID);
                 } else {
-                    JOptionPane.showMessageDialog(null, "Enter text in payment field and date in date field", "error", 0);
+                    JOptionPane.showMessageDialog(null, "Payment Field Must Be a Text, Payment Date Must Be a Date", "Invalid entry", 0);
                 }
             } else {
                 if (paymentsTable.getRowCount() == 0) {
-                    JOptionPane.showMessageDialog(null, "Table is Empty..");
+                    JOptionPane.showMessageDialog(null, "The Table Is Empty");
                 } else {
-                    JOptionPane.showMessageDialog(null, "Please select single row for update..");
+                    JOptionPane.showMessageDialog(null, "Please Select Single Row For Update Payment");
                 }
             }
         }
@@ -349,12 +368,12 @@ public class GetDetailsUser extends JFrame implements ActionListener {
             if (paymentsTable.getSelectedRowCount() == 1) {
                 paymentDefaltTableModel.removeRow(paymentsTable.getSelectedRow());
                 FileOperation.deleteItem("payments.txt",paymentRowID);
-                JOptionPane.showMessageDialog(null, "Delete Successful..");
+                JOptionPane.showMessageDialog(null, "Payment Delete Successful");
             } else {
                 if (paymentsTable.getRowCount() == 0) {
-                    JOptionPane.showMessageDialog(null, "Table is Empty..");
+                    JOptionPane.showMessageDialog(null, "The Table Is Empty");
                 } else {
-                    JOptionPane.showMessageDialog(null, "Please select single row for update..");
+                    JOptionPane.showMessageDialog(null, "Please Select Single Row For Delete Payment");
                 }
             }
 

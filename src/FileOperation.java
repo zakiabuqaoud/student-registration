@@ -196,10 +196,14 @@ public class FileOperation {
     }
 
     public static Boolean checkNameNotExist(String name) {
-        ArrayList<String> studentData = storage("students.txt");
-        for (String row : studentData) {
-            if (row.contains(name)) {
-                return false;
+        if(name.isEmpty()){
+            return true;
+        }else {
+            ArrayList<String> studentData = storage("students.txt");
+            for (String row : studentData) {
+                if (row.contains(name)) {
+                    return false;
+                }
             }
         }
         return true;

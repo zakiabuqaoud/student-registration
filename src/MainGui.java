@@ -20,6 +20,7 @@ public class MainGui extends JFrame implements ActionListener {
         setVisible(true);
         setSize(1000, 700);
         setResizable(false);
+        setLocationRelativeTo(null);
         container.setBackground(Theme.lightBlueColor);
 
 

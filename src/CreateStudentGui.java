@@ -24,6 +24,7 @@ public class CreateStudentGui extends JFrame implements ActionListener {
         setLayout(null);
         setVisible(true);
         setSize(1000, 600);
+        setLocationRelativeTo(null);
         setResizable(true);
         container.setBackground(Theme.lightBlueColor);
 //        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -174,7 +175,7 @@ public class CreateStudentGui extends JFrame implements ActionListener {
 
 
             if (nameTextField.getText().trim().isEmpty() || phoneTextField.getText().trim().isEmpty() || paymentTextField.getText().trim().isEmpty() || paymentDateTextField.getText().trim().isEmpty())
-                JOptionPane.showMessageDialog(null, "Complete All Informations", "Error", 0);
+                JOptionPane.showMessageDialog(null, "Complete All Information", "Invalid Entry", 0);
             else {
                 validation1 = 1;
             }
@@ -183,25 +184,25 @@ public class CreateStudentGui extends JFrame implements ActionListener {
             if (Operation.isDate(paymentDateTextField.getText().trim())) {
                 validation2 = 1;
             } else {
-                JOptionPane.showMessageDialog(null, "Payment Date is incorrect", "Error", 0);
+                JOptionPane.showMessageDialog(null, "Payment Date Is Incorrect", "Invalid Entry", 0);
             }
 
             if (Operation.checkIsNotHash(nameTextField.getText().trim()) && Operation.checkIsNotHash(phoneTextField.getText().trim()) && Operation.checkIsNotHash(paymentTextField.getText().trim())) {
                 validation3 = 1;
             } else {
-                JOptionPane.showMessageDialog(null, "no # or :", "Error", 0);
+                JOptionPane.showMessageDialog(null, "The Fields Must Not Contain # and :", "Invalid Entry", 0);
             }
 
             if (Operation.isPhoneNumber(phoneTextField.getText().trim())) {
                 validation4 = 1;
             } else {
-                JOptionPane.showMessageDialog(null, "must you enter number in  phone number ", "Error", 0);
+                JOptionPane.showMessageDialog(null, "The Phone Field Must Be a Number", "Invalid Entry", 0);
             }
 
             if(FileOperation.checkNameNotExist(nameTextField.getText().trim())){
                 validation5 = 1;
             }else{
-                JOptionPane.showMessageDialog(null, "This FullName is exist", "Error", 0);
+                JOptionPane.showMessageDialog(null, "This FullName Already Exists", "Invalid Entry", 0);
             }
 
             // create student, level, payment
@@ -235,7 +236,7 @@ public class CreateStudentGui extends JFrame implements ActionListener {
                 }
 
 
-                JOptionPane.showMessageDialog(null, "Student is added", "Display Message", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "The Student Is Saved Successfully");
                 nameTextField.setText("");
                 phoneTextField.setText("");
                 paymentTextField.setText("");
@@ -252,14 +253,4 @@ public class CreateStudentGui extends JFrame implements ActionListener {
 
     }
 
-
-    public String getComboBoxSelected() {
-        String level = levelsCompoBox.getSelectedItem().toString();
-        return level;
-
-    }
-
-    public static void main(String[] arg) {
-        // new CreateStudentGui();
-    }
 }

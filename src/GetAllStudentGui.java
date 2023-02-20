@@ -1,6 +1,6 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -8,8 +8,8 @@ import java.util.ArrayList;
 public class GetAllStudentGui extends JFrame implements ActionListener {
     Container container;
     JButton updateButton, deleteButton, showStudentDetailsButton, backButton, chooseDateButton;
-    JTextField searchTextField, nameTextField, phoneNumberTextField, registrationDateTextField;
-    JLabel searchLabel, nameLabel, phoneNumberLabel, registrationDateLabel, titleLabel;
+    JTextField nameTextField, phoneNumberTextField, registrationDateTextField;
+    JLabel nameLabel, phoneNumberLabel, registrationDateLabel, titleLabel;
     MainGui prop;
 
     DefaultTableModel model;
@@ -31,6 +31,7 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
         setVisible(true);
         setSize(1000, 700);
         setResizable(true);
+        setLocationRelativeTo(null);
         container.setBackground(Theme.lightBlueColor);
 
         //JButton
@@ -78,9 +79,6 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
         chooseDateButton.addActionListener(this);
 
         //JLabel
-        searchLabel = new JLabel("Search");
-        searchLabel.setFont(Theme.smallFont);
-        searchLabel.setForeground(Theme.blackColor);
 
         nameLabel = new JLabel("Full Name");
         nameLabel.setFont(Theme.smallFont);
@@ -98,13 +96,11 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
         titleLabel.setFont(Theme.bigFont);
         titleLabel.setForeground(Theme.blackColor);
 
-        searchLabel.setBounds(78, 280, 176, 28);
         nameLabel.setBounds(78, 128, 176, 28);
         phoneNumberLabel.setBounds(78, 183, 176, 28);
         registrationDateLabel.setBounds(528, 183, 176, 28);
         titleLabel.setBounds(350, 25, 554, 52);
 
-        container.add(searchLabel);
         container.add(nameLabel);
         container.add(phoneNumberLabel);
         container.add(registrationDateLabel);
@@ -126,20 +122,13 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
         registrationDateTextField.setForeground(Theme.blackColor);
         registrationDateTextField.setFont(Theme.inputColor);
 
-        searchTextField = new JTextField();
-        searchTextField.setBackground(Theme.whiteColor);
-        searchTextField.setForeground(Theme.blackColor);
-        searchTextField.setFont(Theme.inputColor);
-
         nameTextField.setBounds(225, 128, 400, 28);
         phoneNumberTextField.setBounds(225, 183, 230, 28);
         registrationDateTextField.setBounds(654, 183, 230, 28);
-        searchTextField.setBounds(150, 280, 230, 28);
 
         container.add(nameTextField);
         container.add(phoneNumberTextField);
         container.add(registrationDateTextField);
-        container.add(searchTextField);
 
         //JTable and JScroll
         model = new DefaultTableModel();
@@ -153,11 +142,11 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
         model.addColumn("Full Name");
         model.addColumn("Phone Number");
         model.addColumn("Register Date");
+        studentsTable.setFont(new Font("Cleaver's_Juvenia_Bloc...",Font.PLAIN , 18));
 
         ArrayList<String> studentsArrayList = FileOperation.storage("students.txt");
-
-        for (String row : studentsArrayList) {
-            String[] rowSub = row.split("#");
+        for (int i = studentsArrayList.size(), j=0; j < studentsArrayList.size();j++, i--) {
+            String[] rowSub = studentsArrayList.get(i - 1).split("#");
             String[] rowSubSub0 = rowSub[0].split(":");
             String[] rowSubSub1 = rowSub[1].split(":");
             String[] rowSubSub2 = rowSub[2].split(":");
@@ -165,6 +154,15 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
 
             model.addRow(new Object[]{rowSubSub1[1], rowSubSub2[1], rowSubSub3[1]});
         }
+        DefaultTableCellRenderer cellRenderer;
+        studentsTable.getColumnModel().getColumn(0).setPreferredWidth(400);
+        studentsTable.getColumnModel().getColumn(1).setPreferredWidth(300);
+        studentsTable.getColumnModel().getColumn(2).setPreferredWidth(300);
+        cellRenderer = new DefaultTableCellRenderer();
+        cellRenderer.setHorizontalAlignment(JLabel.CENTER);
+        studentsTable.getColumnModel().getColumn(1).setCellRenderer(cellRenderer);
+        studentsTable.getColumnModel().getColumn(2).setCellRenderer(cellRenderer);
+
         studentsTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -173,29 +171,6 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
 
             }
         });
-
-        searchTextField.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                super.keyPressed(e);
-                DefaultTableModel defaultTableModel = (DefaultTableModel) studentsTable.getModel();
-                TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel>(defaultTableModel);
-                studentsTable.setRowSorter(sorter);
-                sorter.setRowFilter(RowFilter.regexFilter(searchTextField.getText().trim()));
-            }
-        });
-        searchTextField.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                super.keyReleased(e);
-                DefaultTableModel defaultTableModel = (DefaultTableModel) studentsTable.getModel();
-                TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel>(defaultTableModel);
-                studentsTable.setRowSorter(sorter);
-                sorter.setRowFilter(RowFilter.regexFilter(searchTextField.getText().trim()));
-            }
-        });
-
-
     }
 
     @Override
@@ -216,11 +191,12 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
                 ArrayList<String> studentsArrayList = FileOperation.storage("students.txt");
                 String subRow[] = new String[4];
                 for (String row : studentsArrayList) {
-                    try{
-                    if (row.contains(oldName)) {
-                        subRow = row.split("#");
-                        break;
-                    }}catch (Exception exception){
+                    try {
+                        if (row.contains(oldName)) {
+                            subRow = row.split("#");
+                            break;
+                        }
+                    } catch (Exception exception) {
                         System.out.println(exception.getMessage());
                     }
                 }
@@ -230,7 +206,7 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
 
 
                     //get Details for user
-                    getDetailsUser = new GetDetailsUser(this,subSubIDRow[1], subSubNameRow[1]);
+                    getDetailsUser = new GetDetailsUser(this, subSubIDRow[1], subSubNameRow[1]);
                     getDetailsUser.setVisible(true);
 
                 } catch (Exception exception) {
@@ -238,9 +214,9 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
                 }
             } else {
                 if (studentsTable.getRowCount() == 0) {
-                    JOptionPane.showMessageDialog(null, "Table is Empty..");
+                    JOptionPane.showMessageDialog(null, "The Table Is Empty");
                 } else {
-                    JOptionPane.showMessageDialog(null, "Please select single row for display details..");
+                    JOptionPane.showMessageDialog(null, "Please Select Single Row For Display Student Details");
                 }
             }
         }
@@ -254,14 +230,14 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
                 String phone = phoneNumberTextField.getText().trim();
                 String date = registrationDateTextField.getText().trim();
 
-                if (Operation.isPhoneNumber(phone) && Operation.isDate(date) && !name.isEmpty() && !phone.isEmpty() && !date.isEmpty() && Operation.checkIsNotHash(name)&&Operation.checkIsNotHash(date)&&Operation.checkIsNotHash(phone)) {
+                if (Operation.isPhoneNumber(phone) && Operation.isDate(date) && !name.isEmpty() && !phone.isEmpty() && !date.isEmpty() && Operation.checkIsNotHash(name) && Operation.checkIsNotHash(date) && Operation.checkIsNotHash(phone)) {
 
 
                     studentDefaltTableModel.setValueAt(name, studentsTable.getSelectedRow(), 0);
                     studentDefaltTableModel.setValueAt(phone, studentsTable.getSelectedRow(), 1);
                     studentDefaltTableModel.setValueAt(date, studentsTable.getSelectedRow(), 2);
 
-                    JOptionPane.showMessageDialog(null, "Update Successfully..");
+                    JOptionPane.showMessageDialog(null, "Student Update Successfully");
                     nameTextField.setText("");
                     phoneNumberTextField.setText("");
                     registrationDateTextField.setText("");
@@ -280,13 +256,13 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
                     studentsArrayList.set(index, "id:" + subSubIDRow[1] + "#" + "name:" + name + "#" + "phone:" + phone + "#" + "date:" + date);
                     FileOperation.writeToFile("students.txt", studentsArrayList);
                 } else {
-                    JOptionPane.showMessageDialog(null, "enter phone number in phone field, date in date field and text in name field","error",0);
+                    JOptionPane.showMessageDialog(null, "FullName Field Must Be a text, Phone Field Must Be a Number, Date Field Must Be a Date", "Invalid Entry", 0);
                 }
             } else {
                 if (studentsTable.getRowCount() == 0) {
-                    JOptionPane.showMessageDialog(null, "Table is Empty..");
+                    JOptionPane.showMessageDialog(null, "The Table Is Empty");
                 } else {
-                    JOptionPane.showMessageDialog(null, "Please select single row for update..");
+                    JOptionPane.showMessageDialog(null, "Please Select Single Row For Update Student");
                 }
             }
         }
@@ -308,15 +284,15 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
                 }
                 studentsArrayList.remove(index);
                 FileOperation.writeToFile("students.txt", studentsArrayList);
-                JOptionPane.showMessageDialog(null,"student id deleted");
+                JOptionPane.showMessageDialog(null, "Student Delete Successfully");
                 nameTextField.setText("");
                 phoneNumberTextField.setText("");
                 registrationDateTextField.setText("");
             } else {
                 if (studentsTable.getRowCount() == 0) {
-                    JOptionPane.showMessageDialog(null, "Table is Empty..");
+                    JOptionPane.showMessageDialog(null, "The Table Is Empty");
                 } else {
-                    JOptionPane.showMessageDialog(null, "Please select single row for delete..");
+                    JOptionPane.showMessageDialog(null, "Please Select Single Row For Delete Student");
                 }
             }
         }
