@@ -25,6 +25,9 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
         this.prop = prop;
         container = getContentPane();
 
+        Image icon = new ImageIcon(this.getClass().getResource("/icon.png")).getImage();
+        this.setIconImage(icon);
+
 
         setTitle("Students Table");
         setLayout(null);

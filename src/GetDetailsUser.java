@@ -46,6 +46,9 @@ public class GetDetailsUser extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
         container.setBackground(Theme.lightBlueColor);
 
+        Image icon = new ImageIcon(this.getClass().getResource("/icon.png")).getImage();
+        this.setIconImage(icon);
+
 
 
         // JTable

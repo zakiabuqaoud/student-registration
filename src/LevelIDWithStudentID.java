@@ -15,7 +15,7 @@ public class LevelIDWithStudentID {
 
     void addLevelInFile(LevelIDWithStudentID level) {
         try {
-            FileWriter fileWriter = new FileWriter(new File("levelidWithstudentid.txt"), true);
+            FileWriter fileWriter = new FileWriter(new File("files/levelidWithstudentid.txt"), true);
             BufferedWriter write = new BufferedWriter(fileWriter);
             write.write("id:" + this.id + "#" + "levelID:" + this.levelID + "#" + "studentId:" + this.studentId + "\r\n");
             write.close();

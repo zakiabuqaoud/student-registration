@@ -27,6 +27,9 @@ public class CreateStudentGui extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
         setResizable(true);
         container.setBackground(Theme.lightBlueColor);
+
+        Image icon = new ImageIcon(this.getClass().getResource("/icon.png")).getImage();
+        this.setIconImage(icon);
 //        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         /////////////////////////////////////////////////////
         //TextFiled
