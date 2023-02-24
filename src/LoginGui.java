@@ -41,9 +41,9 @@ public class LoginGui extends JFrame implements ActionListener {
         passwordLabel.setFont(Theme.smallFont);
         passwordLabel.setForeground(Theme.blackColor);
 
-        titleLabel.setBounds(0,0,0,0);
-        userNameLabel.setBounds(0,0,0,0);
-        passwordLabel.setBounds(0,0,0,0);
+        titleLabel.setBounds(405, 25, 554, 52);
+        userNameLabel.setBounds(259, 250, 115, 28);
+        passwordLabel.setBounds(259, 300, 115, 28);
 
         container.add(titleLabel);
         container.add(userNameLabel);
@@ -60,8 +60,8 @@ public class LoginGui extends JFrame implements ActionListener {
         passwordField.setForeground(Theme.blackColor);
         passwordField.setFont(Theme.inputColor);
 
-        userNameTextField.setBounds(0,0,0,0);
-        passwordField.setBounds(0,0,0,0);
+        userNameTextField.setBounds(398, 250, 283, 28);
+        passwordField.setBounds(398, 300, 283, 28);
 
         container.add(userNameTextField);
         container.add(passwordField);
@@ -77,8 +77,8 @@ public class LoginGui extends JFrame implements ActionListener {
         resetButton.setForeground(Theme.blackColor);
         resetButton.setFont(Theme.fontSmallBold);
 
-        loginButton.setBounds(0,0,0,0);
-        resetButton.setBounds(0,0,0,0);
+        loginButton.setBounds(402, 400, 97, 28);
+        resetButton.setBounds(544, 400, 105, 28);
 
         container.add(loginButton);
         container.add(resetButton);
@@ -89,7 +89,7 @@ public class LoginGui extends JFrame implements ActionListener {
         //Arced image
         ImageIcon arcImgIcon = new ImageIcon(getClass().getResource("/Resource/arc.png"));
         JLabel arcadiaImg = new JLabel("Arcadia Image");
-        arcadiaImg.setBounds(0, 0, 0, 0);
+        arcadiaImg.setBounds(430, 110, 100, 100);
         arcadiaImg.setIcon(arcImgIcon);
         container.add(arcadiaImg);
 
@@ -115,7 +115,7 @@ public class LoginGui extends JFrame implements ActionListener {
         if(userName.equals("") && password.equals("")){
             JOptionPane.showMessageDialog(null,"Complete All Information","Invalid Entry",0);
         }else {
-            ArrayList<String> authArrayList = FileOperation.storage("files/auth.txt");
+            ArrayList<String> authArrayList = FileOperation.storage("auth.txt");
             String[] authArray = authArrayList.get(0).split("#");
             if(authArray[0].equals(userName)&& authArray[1].equals(password)){
                 this.setVisible(false);

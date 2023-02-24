@@ -19,24 +19,27 @@ public class GetDetailsUser extends JFrame implements ActionListener {
     JScrollPane levelScroll, paymentScroll;
 
     JButton addLevelButton, deleteLevelButton, addPaymentButton, updatePaymentButton, deletePaymentButton, backButton, choosePaymentDateButton;
-    JLabel titleLabel, levelLabel, paymentLabel, paymentDateLabel;
+    JLabel titleLabel, levelLabel, paymentLabel, paymentDateLabel, feesLabel, totalPaymentLabel;
 
-    JTextField paymentTextField, paymentDateTextField;
+    JTextField paymentTextField, paymentDateTextField, feesTextField, totalPaymentTextField;
 
     JComboBox levelsCompoBox;
 
     String studentName;
     String studentID;
+    String studentFees;
     String levelName;
     GetAllStudentGui prop;
     String paymentRowID;
 
-    public GetDetailsUser(GetAllStudentGui prop, String id, String name) {
+    public GetDetailsUser(GetAllStudentGui prop, String id, String name, String studentFees) {
         this.prop = prop;
         container = getContentPane();
 
         this.studentID = id;
         this.studentName = name;
+        this.studentFees = studentFees;
+
 
         setTitle("Students Details");
         setLayout(null);
@@ -48,7 +51,6 @@ public class GetDetailsUser extends JFrame implements ActionListener {
 
         Image icon = new ImageIcon(this.getClass().getResource("/icon.png")).getImage();
         this.setIconImage(icon);
-
 
 
         // JTable
@@ -66,9 +68,8 @@ public class GetDetailsUser extends JFrame implements ActionListener {
         container.add(levelScroll);
         container.add(paymentScroll);
 
-        levelsTable.setFont(new Font("Cleaver's_Juvenia_Bloc...",Font.PLAIN , 18));
-        paymentsTable.setFont(new Font("Cleaver's_Juvenia_Bloc...",Font.PLAIN , 18));
-
+        levelsTable.setFont(new Font("Cleaver's_Juvenia_Bloc...", Font.PLAIN, 18));
+        paymentsTable.setFont(new Font("Cleaver's_Juvenia_Bloc...", Font.PLAIN, 18));
 
 
         levelModel.addColumn("Level");
@@ -117,15 +118,27 @@ public class GetDetailsUser extends JFrame implements ActionListener {
         paymentDateLabel.setFont(Theme.smallFont);
         paymentDateLabel.setForeground(Theme.blackColor);
 
+        feesLabel = new JLabel("Fees");
+        feesLabel.setFont(Theme.smallFont);
+        feesLabel.setForeground(Theme.blackColor);
+
+        totalPaymentLabel = new JLabel("Total Payment");
+        totalPaymentLabel.setFont(Theme.smallFont);
+        totalPaymentLabel.setForeground(Theme.blackColor);
+
         titleLabel.setBounds(350, 25, 554, 52);
         levelLabel.setBounds(30, 140, 150, 28);
-        paymentLabel.setBounds(400, 140, 91, 28);
-        paymentDateLabel.setBounds(677, 140, 141, 28);
+        paymentLabel.setBounds(400, 155, 91, 28);
+        paymentDateLabel.setBounds(677, 155, 141, 28);
+        feesLabel.setBounds(400, 105, 141, 28);
+        totalPaymentLabel.setBounds(677, 105, 141, 28);
 
         container.add(titleLabel);
         container.add(levelLabel);
         container.add(paymentLabel);
         container.add(paymentDateLabel);
+        container.add(feesLabel);
+        container.add(totalPaymentLabel);
 
         //JTextField
 
@@ -139,11 +152,29 @@ public class GetDetailsUser extends JFrame implements ActionListener {
         paymentDateTextField.setForeground(Theme.blackColor);
         paymentDateTextField.setFont(Theme.inputColor);
 
-        paymentTextField.setBounds(497, 140, 165, 28);
-        paymentDateTextField.setBounds(810, 140, 115, 28);
+        feesTextField = new JTextField();
+        feesTextField.setEditable(false);
+        feesTextField.setBackground(Theme.whiteColor);
+        feesTextField.setForeground(Theme.blackColor);
+        feesTextField.setFont(Theme.inputColor);
+        feesTextField.setText(this.studentFees);
+
+        totalPaymentTextField = new JTextField();
+        totalPaymentTextField.setEditable(false);
+        totalPaymentTextField.setBackground(Theme.whiteColor);
+        totalPaymentTextField.setForeground(Theme.blackColor);
+        totalPaymentTextField.setFont(Theme.inputColor);
+        totalPaymentTextField.setText(getTotalPayment());
+
+        paymentTextField.setBounds(497, 155, 165, 28);
+        paymentDateTextField.setBounds(810, 155, 115, 28);
+        feesTextField.setBounds(497, 105, 115, 28);
+        totalPaymentTextField.setBounds(810, 105, 115, 28);
 
         container.add(paymentTextField);
         container.add(paymentDateTextField);
+        container.add(feesTextField);
+        container.add(totalPaymentTextField);
 
         //JCompoBox
         levelsCompoBox = new JComboBox<String>();
@@ -193,7 +224,7 @@ public class GetDetailsUser extends JFrame implements ActionListener {
         updatePaymentButton.setBounds(600, 216, 190, 28);
         deletePaymentButton.setBounds(800, 216, 170, 28);
         backButton.setBounds(815, 580, 150, 28);
-        choosePaymentDateButton.setBounds(925, 140, 47, 28);
+        choosePaymentDateButton.setBounds(925, 155, 47, 28);
 
         container.add(addLevelButton);
         container.add(deleteLevelButton);
@@ -253,7 +284,7 @@ public class GetDetailsUser extends JFrame implements ActionListener {
                     levelModel.addRow(new Object[]{"A1"});
                     LevelIDWithStudentID level = new LevelIDWithStudentID(FileOperation.getID(2), "1", studentID);
                     level.addLevelInFile(level);
-                    JOptionPane.showMessageDialog(null,"The Level Is Saved");
+                    JOptionPane.showMessageDialog(null, "The Level Is Saved");
                 }
             } else if (levelsCompoBox.getSelectedItem().toString() == "A2") {
                 if (FileOperation.levelIsExist("2", studentID)) {
@@ -263,7 +294,7 @@ public class GetDetailsUser extends JFrame implements ActionListener {
                     levelModel.addRow(new Object[]{"A2"});
                     LevelIDWithStudentID level = new LevelIDWithStudentID(FileOperation.getID(2), "2", studentID);
                     level.addLevelInFile(level);
-                    JOptionPane.showMessageDialog(null,"The Level Is Saved");
+                    JOptionPane.showMessageDialog(null, "The Level Is Saved");
                 }
             } else if (levelsCompoBox.getSelectedItem().toString() == "B1") {
                 if (FileOperation.levelIsExist("3", studentID)) {
@@ -273,7 +304,7 @@ public class GetDetailsUser extends JFrame implements ActionListener {
                     levelModel.addRow(new Object[]{"B1"});
                     LevelIDWithStudentID level = new LevelIDWithStudentID(FileOperation.getID(2), "3", studentID);
                     level.addLevelInFile(level);
-                    JOptionPane.showMessageDialog(null,"The Level Is Saved");
+                    JOptionPane.showMessageDialog(null, "The Level Is Saved");
                 }
 
             } else if (levelsCompoBox.getSelectedItem().toString() == "B2") {
@@ -284,7 +315,7 @@ public class GetDetailsUser extends JFrame implements ActionListener {
                     levelModel.addRow(new Object[]{"B2"});
                     LevelIDWithStudentID level = new LevelIDWithStudentID(FileOperation.getID(2), "4", studentID);
                     level.addLevelInFile(level);
-                    JOptionPane.showMessageDialog(null,"The Level Is Saved");
+                    JOptionPane.showMessageDialog(null, "The Level Is Saved");
                 }
             } else if (levelsCompoBox.getSelectedItem().toString() == "C1") {
                 if (FileOperation.levelIsExist("5", studentID)) {
@@ -294,7 +325,7 @@ public class GetDetailsUser extends JFrame implements ActionListener {
                     levelModel.addRow(new Object[]{"C1"});
                     LevelIDWithStudentID level = new LevelIDWithStudentID(FileOperation.getID(2), "5", studentID);
                     level.addLevelInFile(level);
-                    JOptionPane.showMessageDialog(null,"The Level Is Saved");
+                    JOptionPane.showMessageDialog(null, "The Level Is Saved");
                 }
             } else if (levelsCompoBox.getSelectedItem().toString() == "C2") {
                 if (FileOperation.levelIsExist("6", studentID)) {
@@ -304,7 +335,7 @@ public class GetDetailsUser extends JFrame implements ActionListener {
                     levelModel.addRow(new Object[]{"C2"});
                     LevelIDWithStudentID level = new LevelIDWithStudentID(FileOperation.getID(2), "6", studentID);
                     level.addLevelInFile(level);
-                    JOptionPane.showMessageDialog(null,"The Level Is Saved");
+                    JOptionPane.showMessageDialog(null, "The Level Is Saved");
                 }
 
             }
@@ -314,9 +345,12 @@ public class GetDetailsUser extends JFrame implements ActionListener {
             DefaultTableModel levelDefaltTableModel = (DefaultTableModel) levelsTable.getModel();
 
             if (levelsTable.getSelectedRowCount() == 1) {
-                levelDefaltTableModel.removeRow(levelsTable.getSelectedRow());
-                JOptionPane.showMessageDialog(null,"Level Delete Successfully");
-                FileOperation.deleteLevel(getLevelId(levelName), studentID);
+                int option = JOptionPane.showConfirmDialog(null,"Are You Sure To Delete This Level?","Delete",JOptionPane.YES_NO_OPTION);
+                if(option == 0) {
+                    levelDefaltTableModel.removeRow(levelsTable.getSelectedRow());
+                    JOptionPane.showMessageDialog(null, "Level Delete Successfully");
+                    FileOperation.deleteLevel(getLevelId(levelName), studentID);
+                }
             } else {
                 if (levelsTable.getRowCount() == 0) {
                     JOptionPane.showMessageDialog(null, "The Table Is Empty");
@@ -328,15 +362,16 @@ public class GetDetailsUser extends JFrame implements ActionListener {
         if (event.getSource() == addPaymentButton) {
             String paymentString = paymentTextField.getText().trim();
             String datePayment = paymentDateTextField.getText().trim();
-            if (!paymentString.isEmpty() && !datePayment.isEmpty() && Operation.isDate(datePayment) && Operation.checkIsNotHash(paymentString)&&Operation.checkIsNotHash(datePayment)) {
+            if (!paymentString.isEmpty() && !datePayment.isEmpty() && Operation.isDate(datePayment) && Operation.checkIsNotHash(paymentString) && Operation.checkIsNotHash(datePayment) && Operation.isNumeric(paymentString)) {
                 String index = FileOperation.getID(1);
                 DefaultTableModel levelModel = (DefaultTableModel) paymentsTable.getModel();
                 levelModel.addRow(new Object[]{index, paymentString, datePayment});
                 Payment payment = new Payment(index, paymentString, datePayment, studentID);
                 payment.addPaymentInFile(payment);
-                JOptionPane.showMessageDialog(null,"The Payment Is Saved");
+                JOptionPane.showMessageDialog(null, "The Payment Is Saved");
                 paymentTextField.setText("");
                 paymentDateTextField.setText("");
+                totalPaymentTextField.setText(getTotalPayment());
             } else {
                 JOptionPane.showMessageDialog(null, "Payment Field Must Be a Text, Payment Date Must Be a Date", "Invalid Entry", 0);
             }
@@ -346,7 +381,7 @@ public class GetDetailsUser extends JFrame implements ActionListener {
             if (paymentsTable.getSelectedRowCount() == 1) {
                 String payment = paymentTextField.getText().trim();
                 String paymentDate = paymentDateTextField.getText().trim();
-                if (!payment.isEmpty() && !paymentDate.isEmpty() && Operation.isDate(paymentDate) && Operation.checkIsNotHash(payment)&&Operation.checkIsNotHash(paymentDate)) {
+                if (!payment.isEmpty() && !paymentDate.isEmpty() && Operation.isDate(paymentDate) && Operation.checkIsNotHash(payment) && Operation.checkIsNotHash(paymentDate) && Operation.isNumeric(payment)) {
                     String id = paymentDefaltTableModel.getValueAt(paymentsTable.getSelectedRow(), 0).toString();
                     paymentDefaltTableModel.setValueAt(payment, paymentsTable.getSelectedRow(), 1);
                     paymentDefaltTableModel.setValueAt(paymentDate, paymentsTable.getSelectedRow(), 2);
@@ -355,6 +390,7 @@ public class GetDetailsUser extends JFrame implements ActionListener {
                     paymentTextField.setText("");
                     paymentDateTextField.setText("");
                     FileOperation.updatePayment(id, payment, paymentDate, studentID);
+                    totalPaymentTextField.setText(getTotalPayment());
                 } else {
                     JOptionPane.showMessageDialog(null, "Payment Field Must Be a Text, Payment Date Must Be a Date", "Invalid entry", 0);
                 }
@@ -369,9 +405,13 @@ public class GetDetailsUser extends JFrame implements ActionListener {
         if (event.getSource() == deletePaymentButton) {
             DefaultTableModel paymentDefaltTableModel = (DefaultTableModel) paymentsTable.getModel();
             if (paymentsTable.getSelectedRowCount() == 1) {
-                paymentDefaltTableModel.removeRow(paymentsTable.getSelectedRow());
-                FileOperation.deleteItem("payments.txt",paymentRowID);
-                JOptionPane.showMessageDialog(null, "Payment Delete Successful");
+                int option = JOptionPane.showConfirmDialog(null,"Are You Sure To Delete This Payment?","Delete",JOptionPane.YES_NO_OPTION);
+                if(option == 0) {
+                    paymentDefaltTableModel.removeRow(paymentsTable.getSelectedRow());
+                    FileOperation.deleteItem("payments.txt", paymentRowID);
+                    JOptionPane.showMessageDialog(null, "Payment Delete Successful");
+                    totalPaymentTextField.setText(getTotalPayment());
+                }
             } else {
                 if (paymentsTable.getRowCount() == 0) {
                     JOptionPane.showMessageDialog(null, "The Table Is Empty");
@@ -408,5 +448,17 @@ public class GetDetailsUser extends JFrame implements ActionListener {
             return "6";
         }
         return "";
+    }
+
+    public String getTotalPayment() {
+        String totalPayment = "";
+        int totalPaymentInt = 0;
+        for (int i = 0; i < paymentsTable.getRowCount(); i++) {
+            DefaultTableModel paymentDefaltTableModel = (DefaultTableModel) paymentsTable.getModel();
+            String payment = paymentDefaltTableModel.getValueAt(i, 1).toString();
+            totalPaymentInt += Integer.parseInt(payment);
+        }
+        totalPayment = totalPaymentInt + "";
+        return totalPayment;
     }
 }

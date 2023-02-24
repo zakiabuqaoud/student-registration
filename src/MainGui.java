@@ -9,6 +9,10 @@ public class MainGui extends JFrame implements ActionListener {
     JLabel titlePartOneLabel, titlePartTwoLabel, ArcadiaPartOneLabel, ArcadiaPartTwoLabel;
     JButton createStudentButton, showStudentsData;
 
+    JMenu main;
+    JMenuItem changePassword;
+
+
     //external gui
     CreateStudentGui createStudentGui;
     GetAllStudentGui getAllStudentGui;
@@ -25,8 +29,19 @@ public class MainGui extends JFrame implements ActionListener {
 
         Image icon = new ImageIcon(this.getClass().getResource("/icon.png")).getImage();
         this.setIconImage(icon);
+        //JMenu
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.setBackground(Theme.lightBlueColor);
+        menuBar.setBounds(0, 0, 35, 29);
+        add(menuBar);
 
+        JMenu main = new JMenu("Main");
+        menuBar.add(main);
 
+        changePassword = new JMenuItem("Change Password");
+        main.add(changePassword);
+
+        changePassword.addActionListener(this);
 
         //JLabel
         titlePartOneLabel = new JLabel("German Student");
@@ -106,10 +121,11 @@ public class MainGui extends JFrame implements ActionListener {
             getAllStudentGui.setVisible(true);
 
         }
+        if(e.getSource() == changePassword){
+            ChangePasswordGui changePasswordGui = new ChangePasswordGui(this);
+            changePasswordGui.setVisible(true);
+        }
 
     }
 
-    public static void main(String[] argument) {
-        new MainGui();
-    }
 }
