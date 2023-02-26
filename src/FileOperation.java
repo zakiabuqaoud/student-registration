@@ -45,7 +45,7 @@ public class FileOperation {
         ArrayList<String> allData = new ArrayList<>();
         String data;
         try {
-            File file = new File(fileName);
+            File file = new File("files/"+fileName);
             Scanner scanner = new Scanner(file);
             while (scanner.hasNext()) {
                 data = scanner.nextLine();
@@ -59,7 +59,7 @@ public class FileOperation {
 
     public static void writeToFile(String fileName, ArrayList<String> data) {
         try {
-            FileWriter fileWriter = new FileWriter(fileName);
+            FileWriter fileWriter = new FileWriter("files/"+fileName);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             for (String row : data) {
                 bufferedWriter.write(row + "\r\n");
@@ -196,10 +196,16 @@ public class FileOperation {
     }
 
     public static Boolean checkNameNotExist(String name) {
-        ArrayList<String> studentData = storage("students.txt");
-        for (String row : studentData) {
-            if (row.contains(name)) {
-                return false;
+        if(name.isEmpty()){
+            return true;
+        }else {
+            ArrayList<String> studentData = storage("students.txt");
+            for (String row : studentData) {
+                String[] subRow = row.split("#");
+                String[] subSubNameRow = subRow[1].split(":");
+                if (subSubNameRow[1].equals(name)){
+                    return false;
+                }
             }
         }
         return true;

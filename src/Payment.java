@@ -18,7 +18,7 @@ public class Payment {
 
     void addPaymentInFile(Payment payment){
         try {
-            FileWriter fileWriter = new FileWriter(new File("payments.txt"), true);
+            FileWriter fileWriter = new FileWriter(new File("files/payments.txt"), true);
             BufferedWriter write = new BufferedWriter(fileWriter);
             write.write("id:" + this.id + "#" + "amount:"+this.amount + "#" + "date:"+this.paymentDate + "#" + "studentId:"+this.studentId + "\r\n");
             write.close();
