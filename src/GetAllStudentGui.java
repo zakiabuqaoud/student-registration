@@ -279,10 +279,10 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
                 if (Operation.isPhoneNumber(phone) && Operation.isDate(date) && !name.isEmpty() && !phone.isEmpty() && !date.isEmpty() && !fees.isEmpty() && Operation.checkIsNotHash(name) && Operation.checkIsNotHash(date) && Operation.checkIsNotHash(phone) && Operation.checkIsNotHash(fees) && Operation.isNumeric(fees)) {
 
 
-                    studentDefaltTableModel.setValueAt(name, studentsTable.getSelectedRow(), 0);
-                    studentDefaltTableModel.setValueAt(phone, studentsTable.getSelectedRow(), 1);
-                    studentDefaltTableModel.setValueAt(date, studentsTable.getSelectedRow(), 2);
-                    studentDefaltTableModel.setValueAt(fees, studentsTable.getSelectedRow(), 3);
+                    studentDefaltTableModel.setValueAt(name, studentsTable.getSelectedRow(), 1);
+                    studentDefaltTableModel.setValueAt(phone, studentsTable.getSelectedRow(), 2);
+                    studentDefaltTableModel.setValueAt(date, studentsTable.getSelectedRow(), 3);
+                    studentDefaltTableModel.setValueAt(fees, studentsTable.getSelectedRow(), 4);
 
                     JOptionPane.showMessageDialog(null, "Student Update Successfully");
                     nameTextField.setText("");
