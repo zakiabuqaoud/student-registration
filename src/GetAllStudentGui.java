@@ -107,17 +107,17 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
         searchLabel.setFont(Theme.smallFont);
         searchLabel.setForeground(Theme.blackColor);
 
-        studentCountLabel = new JLabel();
+        studentCountLabel = new JLabel("Students Number");
         studentCountLabel.setFont(Theme.smallFont);
         studentCountLabel.setForeground(Theme.blackColor);
 
         nameLabel.setBounds(78, 128, 176, 28);
         phoneNumberLabel.setBounds(78, 183, 176, 28);
         registrationDateLabel.setBounds(528, 183, 176, 28);
-        feesLabel.setBounds(78, 232, 176, 28);
+        feesLabel.setBounds(528, 128, 176, 28);
         titleLabel.setBounds(350, 25, 554, 52);
         searchLabel.setBounds(78, 290, 176, 28);
-        studentCountLabel.setBounds(0, 0, 0, 0);
+        studentCountLabel.setBounds(78, 232, 176, 28);
 
 
         container.add(nameLabel);
@@ -160,12 +160,12 @@ public class GetAllStudentGui extends JFrame implements ActionListener {
         studentCountTextField.setFont(Theme.inputColor);
         studentCountTextField.setEditable(false);
 
-        nameTextField.setBounds(225, 128, 400, 28);
+        nameTextField.setBounds(225, 128, 230, 28);
         phoneNumberTextField.setBounds(225, 183, 230, 28);
         registrationDateTextField.setBounds(654, 183, 230, 28);
-        feesTextField.setBounds(225, 232, 230, 28);
+        feesTextField.setBounds(654, 128, 230, 28);
         searchTextField.setBounds(225, 290, 230, 28);
-        studentCountTextField.setBounds(0, 0, 0, 0);
+        studentCountTextField.setBounds(225, 232, 230, 28);
 
 
         container.add(nameTextField);
