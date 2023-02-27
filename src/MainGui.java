@@ -52,11 +52,11 @@ public class MainGui extends JFrame implements ActionListener {
         titlePartTwoLabel.setFont(Theme.bigFont);
         titlePartTwoLabel.setForeground(Theme.darkBlueColor);
 
-        ArcadiaPartOneLabel = new JLabel("مركز اركيديا");
+        ArcadiaPartOneLabel = new JLabel("المعهد الألماني");
         ArcadiaPartOneLabel.setFont(Theme.MediumFont);
         ArcadiaPartOneLabel.setForeground(Theme.darkBlueColor);
 
-        ArcadiaPartTwoLabel = new JLabel("للتطوير واللغات");
+        ArcadiaPartTwoLabel = new JLabel("للغات والتطوير");
         ArcadiaPartTwoLabel.setFont(Theme.MediumFont);
         ArcadiaPartTwoLabel.setForeground(Theme.darkBlueColor);
 
@@ -125,7 +125,5 @@ public class MainGui extends JFrame implements ActionListener {
             ChangePasswordGui changePasswordGui = new ChangePasswordGui(this);
             changePasswordGui.setVisible(true);
         }
-
     }
-
 }

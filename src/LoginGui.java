@@ -18,7 +18,6 @@ public class LoginGui extends JFrame implements ActionListener {
 
         setTitle("Login Page");
         setLayout(null);
-        setVisible(true);
         setSize(1000, 600);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -92,6 +91,7 @@ public class LoginGui extends JFrame implements ActionListener {
         arcadiaImg.setBounds(430, 110, 100, 100);
         arcadiaImg.setIcon(arcImgIcon);
         container.add(arcadiaImg);
+        setVisible(true);
 
     }
 

@@ -90,12 +90,12 @@ public class GetDetailsUser extends JFrame implements ActionListener {
             paymentModel.addRow(new Object[]{subSubPaymentIDRow[1], subSubPaymentRow[1], subSubPaymentDateRow[1]});
         }
         DefaultTableCellRenderer cellRenderer;
+        paymentsTable.setIntercellSpacing(new Dimension(3,0));
         paymentsTable.getColumnModel().getColumn(0).setPreferredWidth(50);
         paymentsTable.getColumnModel().getColumn(1).setPreferredWidth(400);
         paymentsTable.getColumnModel().getColumn(2).setPreferredWidth(400);
         cellRenderer = new DefaultTableCellRenderer();
         cellRenderer.setHorizontalAlignment(JLabel.CENTER);
-        paymentsTable.getColumnModel().getColumn(0).setCellRenderer(cellRenderer);
         paymentsTable.getColumnModel().getColumn(1).setCellRenderer(cellRenderer);
         paymentsTable.getColumnModel().getColumn(2).setCellRenderer(cellRenderer);
         levelsTable.getColumnModel().getColumn(0).setCellRenderer(cellRenderer);
