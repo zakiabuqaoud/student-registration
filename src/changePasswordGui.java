@@ -181,19 +181,23 @@ public class ChangePasswordGui extends JFrame implements ActionListener {
 
     // this method take new auth and change
     private void changePassword(String newUserName, String newUserNameRepeat, String newPassword, String newPasswordRepeat) {
-        if (newUserName.equals(newUserNameRepeat)) {
-            if (newPassword.equals(newPasswordRepeat)) {
-                ArrayList<String> newAuth = new ArrayList<String>();
-                newAuth.add(newUserName + "#" + newPassword);
-                FileOperation.writeToFile("auth.txt", newAuth);
-                JOptionPane.showMessageDialog(null,"Update Successfully");
-                reset();
-            }else{
-                JOptionPane.showMessageDialog(null, "The New Password Does Not Match", "Invalid Entry", 0);
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "The New User Name Does Not Match", "Invalid Entry", 0);
-        }
+      if(!newUserName.contains("#") && !newPassword.contains("#") && !newUserNameRepeat.contains("#") && !newPasswordRepeat.contains("#") ) {
+          if (newUserName.equals(newUserNameRepeat)) {
+              if (newPassword.equals(newPasswordRepeat)) {
+                  ArrayList<String> newAuth = new ArrayList<String>();
+                  newAuth.add(newUserName + "#" + newPassword);
+                  FileOperation.writeToFile("auth.txt", newAuth);
+                  JOptionPane.showMessageDialog(null, "Update Successfully");
+                  reset();
+              } else {
+                  JOptionPane.showMessageDialog(null, "The New Password Does Not Match", "Invalid Entry", 0);
+              }
+          } else {
+              JOptionPane.showMessageDialog(null, "The New User Name Does Not Match", "Invalid Entry", 0);
+          }
+      }else{
+          JOptionPane.showMessageDialog(null, "No Use # in New UserName or New Password", "Invalid Entry", 0);
+      }
     }
     public void reset(){
         oldUserNameTextField.setText("");
